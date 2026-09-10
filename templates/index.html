@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Pizza House | AI Restaurant Management System</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #fafafa;
+            color: #222;
+        }
+
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        header {
+            background: #c62828;
+            color: white;
+            padding: 18px 50px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        header h1 {
+            font-size: 28px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+
+            min-height: 450px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            text-align: center;
+
+            background:
+                linear-gradient(
+                    rgba(253,236,236,0.94),
+                    rgba(253,236,236,0.94)
+                );
+
+            padding: 50px 20px;
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero-icon {
+            font-size: 70px;
+            margin-bottom: 10px;
+        }
+
+        .hero h2 {
+            font-size: 48px;
+            color: #c62828;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            color: #555;
+            margin-bottom: 28px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+
+            background: #c62828;
+            color: white;
+
+            padding: 14px 28px;
+
+            border-radius: 8px;
+
+            text-decoration: none;
+
+            font-weight: bold;
+
+            border: none;
+
+            cursor: pointer;
+
+            font-size: 16px;
+
+            transition: 0.2s;
+        }
+
+        .btn:hover {
+            background: #a61c1c;
+            transform: translateY(-2px);
+        }
+
+        .btn-green {
+            background: #2e7d32;
+        }
+
+        .btn-green:hover {
+            background: #1b5e20;
+        }
+
+
+        /* =========================
+           FEATURES
+        ========================= */
+
+        .features {
+            padding: 60px 30px;
+            text-align: center;
+        }
+
+        .features h2 {
+            color: #c62828;
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+
+        .features-subtitle {
+            color: #777;
+            margin-bottom: 35px;
+            font-size: 16px;
+        }
+
+
+        .cards {
+
+            display: flex;
+
+            justify-content: center;
+
+            gap: 25px;
+
+            flex-wrap: wrap;
+
+            max-width: 1200px;
+
+            margin: auto;
+        }
+
+
+        .card {
+
+            background: white;
+
+            width: 260px;
+
+            min-height: 270px;
+
+            padding: 30px 20px;
+
+            border-radius: 14px;
+
+            box-shadow:
+                0 3px 12px rgba(0,0,0,0.10);
+
+            transition: 0.25s;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
+
+            align-items: center;
+
+            text-decoration: none;
+
+            color: inherit;
+
+            border: 2px solid transparent;
+        }
+
+        .card:hover {
+
+            transform: translateY(-8px);
+
+            box-shadow:
+                0 8px 25px rgba(0,0,0,0.15);
+
+            border-color: #c62828;
+        }
+
+
+        .card-icon {
+            font-size: 55px;
+            margin-bottom: 15px;
+        }
+
+        .card h3 {
+            margin-bottom: 12px;
+            color: #c62828;
+            font-size: 21px;
+        }
+
+        .card p {
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 18px;
+        }
+
+
+        .card-action {
+
+            color: #c62828;
+
+            font-weight: bold;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           STATUS SECTION
+        ========================= */
+
+        .system-section {
+
+            background: #fff5f5;
+
+            padding: 45px 20px;
+
+            text-align: center;
+        }
+
+        .system-section h2 {
+            color: #c62828;
+            margin-bottom: 25px;
+        }
+
+        .system-items {
+
+            display: flex;
+
+            justify-content: center;
+
+            gap: 30px;
+
+            flex-wrap: wrap;
+        }
+
+        .system-item {
+
+            background: white;
+
+            padding: 18px 25px;
+
+            border-radius: 10px;
+
+            box-shadow:
+                0 2px 8px rgba(0,0,0,0.08);
+
+            font-weight: bold;
+        }
+
+        .system-item span {
+            color: #2e7d32;
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+
+            background: #222;
+
+            color: white;
+
+            text-align: center;
+
+            padding: 25px;
+
+            margin-top: 0;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 800px) {
+
+            header {
+
+                flex-direction: column;
+
+                gap: 15px;
+
+                text-align: center;
+            }
+
+            nav a {
+                margin: 0 7px;
+            }
+
+            .hero h2 {
+                font-size: 35px;
+            }
+
+            .hero p {
+                font-size: 17px;
+            }
+
+            .features {
+                padding: 45px 15px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     HEADER
+====================================================== -->
+
+<header>
+
+    <h1>
+        🍕 Pizza House
+    </h1>
+
+
+    <nav>
+
+        <a href="/">
+            Home
+        </a>
+
+        <a href="/order">
+            Order
+        </a>
+
+        <a href="/booking">
+            Table Booking
+        </a>
+
+        <a href="/menu">
+            Menu
+        </a>
+
+        <a href="/customers">
+            Customers
+        </a>
+
+        <a href="/admin">
+            Admin
+        </a>
+
+    </nav>
+
+</header>
+
+
+
+<!-- =====================================================
+     HERO
+====================================================== -->
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <div class="hero-icon">
+            🍕
+        </div>
+
+
+        <h2>
+            Delicious Pizza, Anytime!
+        </h2>
+
+
+        <p>
+            Order your favourite pizza with our
+            smart AI-powered restaurant management system.
+        </p>
+
+
+        <div class="hero-buttons">
+
+            <a
+                href="/order"
+                class="btn"
+            >
+                🍕 Order Now
+            </a>
+
+
+            <a
+                href="/booking"
+                class="btn btn-green"
+            >
+                🪑 Book a Table
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     SERVICES
+====================================================== -->
+
+<section class="features">
+
+    <h2>
+        Pizza House Services
+    </h2>
+
+
+    <p class="features-subtitle">
+        Choose a service to get started
+    </p>
+
+
+
+    <div class="cards">
+
+
+        <!-- ONLINE ORDERING -->
+
+        <a
+            href="/order"
+            class="card"
+        >
+
+            <div class="card-icon">
+                🍕
+            </div>
+
+
+            <h3>
+                Online Ordering
+            </h3>
+
+
+            <p>
+                Select your pizza, size and quantity.
+                Get automatic GST calculation and invoice.
+            </p>
+
+
+            <div class="card-action">
+                Start Order →
+            </div>
+
+        </a>
+
+
+
+        <!-- AI VOICE ORDERING -->
+
+        <a
+            href="/voice-order"
+            class="card"
+        >
+
+            <div class="card-icon">
+                🎙️
+            </div>
+
+
+            <h3>
+                AI Voice Ordering
+            </h3>
+
+
+            <p>
+                Talk with our AI voice assistant
+                and place your pizza order using your voice.
+            </p>
+
+
+            <div class="card-action">
+                Start Voice Order →
+            </div>
+
+        </a>
+
+
+
+        <!-- BILLING & GST -->
+
+        <a
+            href="/order"
+            class="card"
+        >
+
+            <div class="card-icon">
+                🧾
+            </div>
+
+
+            <h3>
+                Billing & GST
+            </h3>
+
+
+            <p>
+                Automatic 5% GST calculation,
+                bill generation and professional invoice.
+            </p>
+
+
+            <div class="card-action">
+                Create Invoice →
+            </div>
+
+        </a>
+
+
+
+        <!-- TABLE BOOKING -->
+
+        <a
+            href="/booking"
+            class="card"
+        >
+
+            <div class="card-icon">
+                🪑
+            </div>
+
+
+            <h3>
+                Table Booking
+            </h3>
+
+
+            <p>
+                Book restaurant tables by selecting
+                customer details, date, time and guests.
+            </p>
+
+
+            <div class="card-action">
+                Book Table →
+            </div>
+
+        </a>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     SYSTEM FEATURES
+====================================================== -->
+
+<section class="system-section">
+
+    <h2>
+        ⚡ Smart Restaurant Management
+    </h2>
+
+
+    <div class="system-items">
+
+
+        <div class="system-item">
+            🍕 Online Orders
+            <span>✓</span>
+        </div>
+
+
+        <div class="system-item">
+            🧾 GST Billing
+            <span>✓</span>
+        </div>
+
+
+        <div class="system-item">
+            📊 Reports
+            <span>✓</span>
+        </div>
+
+
+        <div class="system-item">
+            👥 Customer Management
+            <span>✓</span>
+        </div>
+
+
+        <div class="system-item">
+            🪑 Table Booking
+            <span>✓</span>
+        </div>
+
+
+        <div class="system-item">
+            🤖 AI Voice
+            <span>Coming</span>
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     FOOTER
+====================================================== -->
+
+<footer>
+
+    <p>
+        © 2026 Pizza House |
+        AI Restaurant Management System
+    </p>
+
+</footer>
+
+
+</body>
+
+</html>

@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Manage Menu - Pizza House</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+
+        body {
+            background: #f7f7f7;
+            color: #222;
+        }
+
+
+        header {
+            background: #c62828;
+            color: white;
+            padding: 18px 45px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+
+        .logo {
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: bold;
+        }
+
+
+        .container {
+            max-width: 1200px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+
+        h1 {
+            color: #c62828;
+            margin-bottom: 8px;
+        }
+
+
+        .subtitle {
+            color: #777;
+            margin-bottom: 25px;
+        }
+
+
+        .buttons {
+            margin-bottom: 25px;
+        }
+
+
+        .buttons a {
+            display: inline-block;
+            padding: 10px 18px;
+            background: #eeeeee;
+            color: #333;
+            text-decoration: none;
+            border-radius: 7px;
+            margin-right: 8px;
+            font-weight: bold;
+        }
+
+
+        .message {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 14px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+        }
+
+
+        .card h2 {
+            color: #c62828;
+            margin-bottom: 20px;
+        }
+
+
+        .add-grid {
+            display: grid;
+
+            grid-template-columns:
+                2fr
+                1fr
+                1fr
+                1fr
+                auto;
+
+            gap: 12px;
+
+            align-items: end;
+        }
+
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+
+        input {
+            width: 100%;
+            padding: 11px;
+
+            border: 1px solid #ddd;
+
+            border-radius: 7px;
+
+            outline: none;
+        }
+
+
+        input:focus {
+            border-color: #c62828;
+        }
+
+
+        .btn {
+            border: none;
+
+            padding: 11px 18px;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+        }
+
+
+        .add {
+            background: #c62828;
+            color: white;
+        }
+
+
+        .update {
+            background: #2e7d32;
+            color: white;
+        }
+
+
+        .delete {
+            background: #d32f2f;
+            color: white;
+        }
+
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+
+        th {
+            background: #c62828;
+            color: white;
+            padding: 13px;
+            text-align: left;
+        }
+
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+
+        tr:hover {
+            background: #fff8f8;
+        }
+
+
+        .edit-input {
+            min-width: 120px;
+        }
+
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+
+        footer {
+            text-align: center;
+            color: #777;
+            padding: 30px;
+        }
+
+
+        @media (max-width: 900px) {
+
+            .add-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+
+            nav a {
+                margin: 0 7px;
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .add-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .container {
+                padding: 0 12px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <div class="logo">
+        🍕 Pizza House
+    </div>
+
+
+    <nav>
+
+        <a href="/">
+            Home
+        </a>
+
+        <a href="/order">
+            Order
+        </a>
+
+        <a href="/booking">
+            Booking
+        </a>
+
+        <a href="/menu">
+            Menu
+        </a>
+
+        <a href="/admin">
+            Admin
+        </a>
+
+    </nav>
+
+</header>
+
+
+
+<div class="container">
+
+
+    <h1>
+        🍕 Menu Management
+    </h1>
+
+
+    <p class="subtitle">
+        Add, update and delete Pizza House menu items.
+    </p>
+
+
+
+    <div class="buttons">
+
+        <a href="/menu">
+            👀 View Menu
+        </a>
+
+        <a href="/admin">
+            📊 Admin Dashboard
+        </a>
+
+    </div>
+
+
+
+    {% if message %}
+
+    <div class="message">
+
+        {{ message }}
+
+    </div>
+
+    {% endif %}
+
+
+
+    <!-- ADD PIZZA -->
+
+    <div class="card">
+
+        <h2>
+            ➕ Add New Pizza
+        </h2>
+
+
+        <form
+            method="POST"
+            action="/menu/manage"
+        >
+
+            <input
+                type="hidden"
+                name="action"
+                value="add"
+            >
+
+
+            <div class="add-grid">
+
+
+                <div>
+
+                    <label>
+                        Pizza Name
+                    </label>
+
+                    <input
+                        type="text"
+                        name="item_name"
+                        placeholder="Cheese Burst"
+                        required
+                    >
+
+                </div>
+
+
+                <div>
+
+                    <label>
+                        Small Price
+                    </label>
+
+                    <input
+                        type="number"
+                        name="small_price"
+                        min="0"
+                        step="0.01"
+                        placeholder="199"
+                        required
+                    >
+
+                </div>
+
+
+                <div>
+
+                    <label>
+                        Medium Price
+                    </label>
+
+                    <input
+                        type="number"
+                        name="medium_price"
+                        min="0"
+                        step="0.01"
+                        placeholder="299"
+                        required
+                    >
+
+                </div>
+
+
+                <div>
+
+                    <label>
+                        Large Price
+                    </label>
+
+                    <input
+                        type="number"
+                        name="large_price"
+                        min="0"
+                        step="0.01"
+                        placeholder="399"
+                        required
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="btn add"
+                >
+                    Add Pizza
+                </button>
+
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+
+    <!-- MENU LIST -->
+
+    <div class="card">
+
+        <h2>
+            📋 Current Menu
+        </h2>
+
+
+        <div class="table-wrapper">
+
+
+            <table>
+
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            ID
+                        </th>
+
+                        <th>
+                            Pizza
+                        </th>
+
+                        <th>
+                            Small
+                        </th>
+
+                        <th>
+                            Medium
+                        </th>
+
+                        <th>
+                            Large
+                        </th>
+
+                        <th>
+                            Actions
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+
+                <tbody>
+
+
+                    {% for item in menu %}
+
+
+                    <tr>
+
+
+                        <td>
+                            #{{ item.id }}
+                        </td>
+
+
+                        <td colspan="4">
+
+                            <form
+                                method="POST"
+                                action="/menu/manage"
+                                style="
+                                    display:grid;
+                                    grid-template-columns:
+                                    1.5fr
+                                    1fr
+                                    1fr
+                                    1fr
+                                    auto;
+                                    gap:8px;
+                                    align-items:center;
+                                "
+                            >
+
+                                <input
+                                    type="hidden"
+                                    name="action"
+                                    value="update"
+                                >
+
+
+                                <input
+                                    type="hidden"
+                                    name="item_id"
+                                    value="{{ item.id }}"
+                                >
+
+
+                                <input
+                                    class="edit-input"
+                                    type="text"
+                                    name="item_name"
+                                    value="{{ item.item_name }}"
+                                    required
+                                >
+
+
+                                <input
+                                    class="edit-input"
+                                    type="number"
+                                    name="small_price"
+                                    value="{{ item.small_price }}"
+                                    min="0"
+                                    step="0.01"
+                                    required
+                                >
+
+
+                                <input
+                                    class="edit-input"
+                                    type="number"
+                                    name="medium_price"
+                                    value="{{ item.medium_price }}"
+                                    min="0"
+                                    step="0.01"
+                                    required
+                                >
+
+
+                                <input
+                                    class="edit-input"
+                                    type="number"
+                                    name="large_price"
+                                    value="{{ item.large_price }}"
+                                    min="0"
+                                    step="0.01"
+                                    required
+                                >
+
+
+                                <button
+                                    type="submit"
+                                    class="btn update"
+                                >
+                                    Update
+                                </button>
+
+
+                            </form>
+
+                        </td>
+
+
+                        <td>
+
+                            <form
+                                method="POST"
+                                action="/menu/manage"
+                                onsubmit="
+                                    return confirm(
+                                        'Are you sure you want to delete this pizza?'
+                                    );
+                                "
+                            >
+
+                                <input
+                                    type="hidden"
+                                    name="action"
+                                    value="delete"
+                                >
+
+
+                                <input
+                                    type="hidden"
+                                    name="item_id"
+                                    value="{{ item.id }}"
+                                >
+
+
+                                <button
+                                    type="submit"
+                                    class="btn delete"
+                                >
+                                    🗑 Delete
+                                </button>
+
+                            </form>
+
+                        </td>
+
+
+                    </tr>
+
+
+                    {% endfor %}
+
+
+                </tbody>
+
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+
+<footer>
+
+    © 2026 Pizza House |
+    AI Restaurant Management System
+
+</footer>
+
+
+</body>
+
+</html>

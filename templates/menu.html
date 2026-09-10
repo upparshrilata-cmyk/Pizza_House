@@ -1,0 +1,478 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Menu - Pizza House</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f7f7f7;
+            color: #222;
+        }
+
+        header {
+            background: #c62828;
+            color: white;
+            padding: 18px 45px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .top-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            gap: 20px;
+        }
+
+        h1 {
+            color: #c62828;
+            margin-bottom: 7px;
+        }
+
+        .subtitle {
+            color: #777;
+        }
+
+        .manage-btn {
+            display: inline-block;
+
+            background: #c62828;
+            color: white;
+
+            padding: 13px 22px;
+
+            text-decoration: none;
+
+            border-radius: 8px;
+
+            font-weight: bold;
+
+            box-shadow:
+                0 3px 8px
+                rgba(0,0,0,0.15);
+        }
+
+        .manage-btn:hover {
+            background: #a61c1c;
+        }
+
+        .back-btn {
+            display: inline-block;
+
+            background: #555;
+            color: white;
+
+            padding: 13px 22px;
+
+            text-decoration: none;
+
+            border-radius: 8px;
+
+            font-weight: bold;
+        }
+
+        .back-btn:hover {
+            background: #333;
+        }
+
+        .menu-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 22px;
+        }
+
+        .menu-card {
+            background: white;
+
+            border-radius: 12px;
+
+            padding: 22px;
+
+            box-shadow:
+                0 3px 12px
+                rgba(0,0,0,0.08);
+
+            transition: 0.2s;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .pizza-icon {
+            font-size: 45px;
+            margin-bottom: 10px;
+        }
+
+        .pizza-name {
+            color: #c62828;
+
+            font-size: 22px;
+
+            font-weight: bold;
+
+            margin-bottom: 15px;
+        }
+
+        .price-row {
+            display: flex;
+
+            justify-content: space-between;
+
+            padding: 10px 0;
+
+            border-bottom:
+                1px solid #eeeeee;
+        }
+
+        .price-row:last-child {
+            border-bottom: none;
+        }
+
+        .size {
+            font-weight: bold;
+            color: #555;
+        }
+
+        .price {
+            font-weight: bold;
+            color: #2e7d32;
+        }
+
+        .empty {
+            background: white;
+
+            padding: 40px;
+
+            text-align: center;
+
+            border-radius: 12px;
+
+            color: #777;
+        }
+
+        footer {
+            text-align: center;
+
+            color: #777;
+
+            padding: 35px;
+        }
+
+        .button-area {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 900px) {
+
+            .menu-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .top-section {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav a {
+                margin: 0 7px;
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 0 12px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <div class="logo">
+        🍕 Pizza House
+    </div>
+
+
+    <nav>
+
+        {% if role == "admin" %}
+
+            <a href="/admin">
+                Dashboard
+            </a>
+
+            <a href="/order">
+                Orders
+            </a>
+
+            <a href="/booking">
+                Booking
+            </a>
+
+            <a href="/menu">
+                Menu
+            </a>
+
+            <a href="/customers">
+                Customers
+            </a>
+
+            <a href="/reports">
+                Reports
+            </a>
+
+        {% else %}
+
+            <a href="/customer-dashboard">
+                Dashboard
+            </a>
+
+            <a href="/voice-order">
+                Voice Order
+            </a>
+
+            <a href="/booking">
+                Booking
+            </a>
+
+            <a href="/menu">
+                Menu
+            </a>
+
+        {% endif %}
+
+        <a href="/logout">
+            Logout
+        </a>
+
+    </nav>
+
+</header>
+
+
+
+<div class="container">
+
+
+    <div class="top-section">
+
+
+        <div>
+
+            <h1>
+                🍕 Pizza House Menu
+            </h1>
+
+            <p class="subtitle">
+                Choose your favourite pizza and enjoy!
+            </p>
+
+        </div>
+
+
+        <div class="button-area">
+
+
+            {% if role == "admin" %}
+
+                <a
+                    href="/menu/manage"
+                    class="manage-btn"
+                >
+                    ➕ Add / Manage Menu
+                </a>
+
+            {% endif %}
+
+
+            {% if role == "customer" %}
+
+                <a
+                    href="/customer-dashboard"
+                    class="back-btn"
+                >
+                    ← Dashboard
+                </a>
+
+            {% endif %}
+
+
+        </div>
+
+
+    </div>
+
+
+
+    {% if menu %}
+
+
+    <div class="menu-grid">
+
+
+        {% for item in menu %}
+
+
+        <div class="menu-card">
+
+
+            <div class="pizza-icon">
+                🍕
+            </div>
+
+
+            <div class="pizza-name">
+                {{ item.item_name }}
+            </div>
+
+
+            <div class="price-row">
+
+                <span class="size">
+                    Small
+                </span>
+
+                <span class="price">
+                    ₹{{ "%.2f"|format(item.small_price) }}
+                </span>
+
+            </div>
+
+
+            <div class="price-row">
+
+                <span class="size">
+                    Medium
+                </span>
+
+                <span class="price">
+                    ₹{{ "%.2f"|format(item.medium_price) }}
+                </span>
+
+            </div>
+
+
+            <div class="price-row">
+
+                <span class="size">
+                    Large
+                </span>
+
+                <span class="price">
+                    ₹{{ "%.2f"|format(item.large_price) }}
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+        {% endfor %}
+
+
+    </div>
+
+
+    {% else %}
+
+
+    <div class="empty">
+
+        <h2>
+            No menu items available
+        </h2>
+
+        <p>
+            Admin has not added any menu items yet.
+        </p>
+
+    </div>
+
+
+    {% endif %}
+
+
+</div>
+
+
+
+<footer>
+
+    © 2026 Pizza House |
+    AI Restaurant Management System
+
+</footer>
+
+
+</body>
+
+</html>

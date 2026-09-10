@@ -1,0 +1,1344 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard - Pizza House</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f6f7fb;
+            color: #222;
+        }
+
+        /* =========================
+           MAIN LAYOUT
+        ========================= */
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
+        .sidebar {
+            width: 250px;
+            background: #c62828;
+            color: white;
+            min-height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            padding: 25px 15px;
+        }
+
+        .brand {
+            text-align: center;
+            padding: 10px 5px 30px;
+            border-bottom: 1px solid #333;
+            margin-bottom: 25px;
+        }
+
+        .brand-icon {
+            font-size: 42px;
+        }
+
+        .brand-name {
+            font-size: 23px;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .brand-subtitle {
+            color: #aaa;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+
+        .menu-title {
+            color: #888;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0 15px;
+            margin-bottom: 10px;
+        }
+
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            text-decoration: none;
+            color: #ddd;
+            padding: 13px 15px;
+            margin-bottom: 5px;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .sidebar a:hover {
+            background: #2b2b2b;
+            color: white;
+        }
+
+        .sidebar a.active {
+            background: #a61c1c;
+            color: white;
+        }
+
+        .sidebar-icon {
+            width: 22px;
+            text-align: center;
+            font-size: 17px;
+        }
+
+
+        .sidebar-bottom {
+            position: absolute;
+            bottom: 20px;
+            left: 15px;
+            right: 15px;
+        }
+
+        .home-link {
+            border-top: 1px solid #333;
+            padding-top: 15px !important;
+        }
+
+
+        /* =========================
+           CONTENT
+        ========================= */
+
+        .content {
+            margin-left: 250px;
+            width: calc(100% - 250px);
+            padding: 30px 35px;
+        }
+
+
+        /* =========================
+           TOP BAR
+        ========================= */
+
+        .topbar {
+            background: white;
+            border-radius: 12px;
+            padding: 18px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.06);
+            margin-bottom: 30px;
+        }
+
+        .topbar-left h2 {
+            font-size: 22px;
+            color: #222;
+        }
+
+        .topbar-left p {
+            color: #777;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+
+        /* =========================
+           ADMIN PROFILE
+        ========================= */
+
+        .admin-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .admin-avatar {
+            width: 42px;
+            height: 42px;
+            background: #c62828;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .admin-text strong {
+            display: block;
+            font-size: 14px;
+        }
+
+        .admin-text span {
+            color: #888;
+            font-size: 12px;
+        }
+
+
+        /* =========================
+           LOGOUT BUTTON
+        ========================= */
+
+        .logout {
+            background: #C62828;
+            color: white;
+            text-decoration: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-weight: bold;
+            margin-left: 15px;
+            transition: 0.2s;
+        }
+
+        .logout:hover {
+            background: #A61C1C;
+        }
+
+
+        /* =========================
+           WELCOME
+        ========================= */
+
+        .welcome {
+            margin-bottom: 25px;
+        }
+
+        .welcome h1 {
+            font-size: 30px;
+            color: #222;
+            margin-bottom: 7px;
+        }
+
+        .welcome h1 span {
+            color: #c62828;
+        }
+
+        .welcome p {
+            color: #777;
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           STAT CARDS
+        ========================= */
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.06);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::after {
+            content: "";
+            position: absolute;
+            right: -25px;
+            top: -25px;
+            width: 80px;
+            height: 80px;
+            background: #fdeaea;
+            border-radius: 50%;
+        }
+
+        .stat-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stat-icon {
+            width: 45px;
+            height: 45px;
+            background: #fff0f0;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 22px;
+        }
+
+        .stat-title {
+            color: #777;
+            font-size: 13px;
+            margin-top: 17px;
+        }
+
+        .stat-value {
+            font-size: 25px;
+            font-weight: bold;
+            margin-top: 5px;
+            color: #222;
+        }
+
+
+        /* =========================
+           QUICK ACTIONS
+        ========================= */
+
+        .section-title {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #222;
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+
+        .quick-action {
+            background: white;
+            padding: 18px 12px;
+            text-align: center;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #333;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.05);
+            transition: 0.2s;
+            border: 1px solid #eee;
+        }
+
+        .quick-action:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(0,0,0,0.10);
+            border-color: #c62828;
+        }
+
+        .quick-icon {
+            font-size: 25px;
+            margin-bottom: 8px;
+        }
+
+        .quick-action strong {
+            display: block;
+            font-size: 13px;
+        }
+
+
+        /* =========================
+           TWO COLUMN
+        ========================= */
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 22px;
+        }
+
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 22px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.06);
+            margin-bottom: 22px;
+        }
+
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .card-header h2 {
+            font-size: 18px;
+        }
+
+        .view-all {
+            color: #c62828;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+
+        /* =========================
+           TABLE
+        ========================= */
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 650px;
+        }
+
+        th {
+            background: #fafafa;
+            color: #777;
+            padding: 12px;
+            text-align: left;
+            font-size: 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        td {
+            padding: 13px 12px;
+            border-bottom: 1px solid #eee;
+            font-size: 13px;
+        }
+
+        tbody tr:hover {
+            background: #fff8f8;
+        }
+
+        .order-id {
+            color: #c62828;
+            font-weight: bold;
+        }
+
+        .customer-name {
+            font-weight: bold;
+        }
+
+        .total {
+            font-weight: bold;
+        }
+
+
+        /* =========================
+           STATUS
+        ========================= */
+
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .confirmed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .cancelled {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+
+        /* =========================
+           BOOKING
+        ========================= */
+
+        .booking-item {
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .booking-item:last-child {
+            border-bottom: none;
+        }
+
+        .booking-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .booking-name {
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .booking-info {
+            color: #777;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+
+        /* =========================
+           SEARCH
+        ========================= */
+
+        .search-box {
+            width: 100%;
+            padding: 10px 13px;
+            border: 1px solid #ddd;
+            border-radius: 7px;
+            margin-bottom: 15px;
+            outline: none;
+        }
+
+        .search-box:focus {
+            border-color: #c62828;
+        }
+
+
+        /* =========================
+           EMPTY
+        ========================= */
+
+        .empty {
+            text-align: center;
+            padding: 35px;
+            color: #888;
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+            padding: 25px 0 5px;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 1100px) {
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .quick-actions {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+
+        @media (max-width: 750px) {
+
+            .sidebar {
+                width: 70px;
+                padding: 15px 8px;
+            }
+
+            .brand-name,
+            .brand-subtitle,
+            .menu-title,
+            .sidebar a span:not(.sidebar-icon) {
+                display: none;
+            }
+
+            .brand-icon {
+                font-size: 30px;
+            }
+
+            .sidebar a {
+                justify-content: center;
+                padding: 13px 5px;
+            }
+
+            .sidebar-bottom {
+                left: 8px;
+                right: 8px;
+            }
+
+            .content {
+                margin-left: 70px;
+                width: calc(100% - 70px);
+                padding: 20px;
+            }
+
+            .topbar {
+                padding: 15px;
+            }
+
+            .admin-text {
+                display: none;
+            }
+
+            .logout {
+                margin-left: 5px;
+                padding: 9px 14px;
+            }
+
+        }
+
+
+        @media (max-width: 550px) {
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-actions {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .welcome h1 {
+                font-size: 24px;
+            }
+
+            .content {
+                padding: 15px;
+            }
+
+            .topbar-left h2 {
+                font-size: 18px;
+            }
+
+            .logout {
+                padding: 8px 12px;
+                font-size: 13px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="layout">
+
+
+    <!-- =========================
+         SIDEBAR
+    ========================= -->
+
+    <aside class="sidebar">
+
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                🍕
+            </div>
+
+            <div class="brand-name">
+                Pizza House
+            </div>
+
+            <div class="brand-subtitle">
+                AI Restaurant Management
+            </div>
+
+        </div>
+
+
+        <div class="menu-title">
+            Main Menu
+        </div>
+
+
+        <a href="/">
+            <span class="sidebar-icon">🏠</span>
+            <span>Home</span>
+        </a>
+
+
+        <a href="/admin" class="active">
+            <span class="sidebar-icon">📊</span>
+            <span>Dashboard</span>
+        </a>
+
+
+        <a href="/order">
+            <span class="sidebar-icon">🛒</span>
+            <span>Orders</span>
+        </a>
+
+
+        <a href="/booking">
+            <span class="sidebar-icon">📅</span>
+            <span>Table Booking</span>
+        </a>
+
+
+        <a href="/menu">
+            <span class="sidebar-icon">🍕</span>
+            <span>Menu</span>
+        </a>
+
+
+        <a href="/menu/manage">
+            <span class="sidebar-icon">⚙️</span>
+            <span>Manage Menu</span>
+        </a>
+
+
+        <a href="/customers">
+            <span class="sidebar-icon">👥</span>
+            <span>Customers</span>
+        </a>
+
+
+        <a href="/reports">
+            <span class="sidebar-icon">📈</span>
+            <span>Reports</span>
+        </a>
+
+
+        <div class="sidebar-bottom">
+
+            <a href="/" class="home-link">
+
+                <span class="sidebar-icon">
+                    ↩️
+                </span>
+
+                <span>
+                    Back to Website
+                </span>
+
+            </a>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =========================
+         MAIN CONTENT
+    ========================= -->
+
+    <main class="content">
+
+
+        <!-- =========================
+             TOP BAR
+        ========================= -->
+
+        <div class="topbar">
+
+
+            <div class="topbar-left">
+
+                <h2>
+                    Admin Dashboard
+                </h2>
+
+                <p>
+                    Pizza House Management System
+                </p>
+
+            </div>
+
+
+            <div class="admin-profile">
+
+
+                <div class="admin-avatar">
+                    👨‍💼
+                </div>
+
+
+                <div class="admin-text">
+
+                    <strong>
+                        Administrator
+                    </strong>
+
+                    <span>
+                        Restaurant Manager
+                    </span>
+
+                </div>
+
+
+                <!-- LOGOUT -->
+
+                <a
+                    href="{{ url_for('logout') }}"
+                    class="logout">
+
+                    Logout
+
+                </a>
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =========================
+             WELCOME
+        ========================= -->
+
+        <div class="welcome">
+
+            <h1>
+                Welcome to <span>Pizza House</span> 👋
+            </h1>
+
+            <p>
+                Manage orders, customers, menu, bookings and restaurant reports from one place.
+            </p>
+
+        </div>
+
+
+
+        <!-- =========================
+             STATISTICS
+        ========================= -->
+
+        <div class="stats-grid">
+
+
+            <div class="stat-card">
+
+                <div class="stat-top">
+
+                    <div class="stat-icon">
+                        📋
+                    </div>
+
+                </div>
+
+                <div class="stat-title">
+                    Total Orders
+                </div>
+
+                <div class="stat-value">
+                    {{ stats.total_orders }}
+                </div>
+
+            </div>
+
+
+
+            <div class="stat-card">
+
+                <div class="stat-top">
+
+                    <div class="stat-icon">
+                        💰
+                    </div>
+
+                </div>
+
+                <div class="stat-title">
+                    Total Sales
+                </div>
+
+                <div class="stat-value">
+                    ₹{{ "%.2f"|format(stats.total_sales) }}
+                </div>
+
+            </div>
+
+
+
+            <div class="stat-card">
+
+                <div class="stat-top">
+
+                    <div class="stat-icon">
+                        👥
+                    </div>
+
+                </div>
+
+                <div class="stat-title">
+                    Customers
+                </div>
+
+                <div class="stat-value">
+                    {{ stats.customers }}
+                </div>
+
+            </div>
+
+
+
+            <div class="stat-card">
+
+                <div class="stat-top">
+
+                    <div class="stat-icon">
+                        🧾
+                    </div>
+
+                </div>
+
+                <div class="stat-title">
+                    GST Collected
+                </div>
+
+                <div class="stat-value">
+                    ₹{{ "%.2f"|format(stats.total_gst) }}
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =========================
+             QUICK ACTIONS
+        ========================= -->
+
+        <h2 class="section-title">
+            Quick Actions
+        </h2>
+
+
+        <div class="quick-actions">
+
+
+            <a href="/order" class="quick-action">
+
+                <div class="quick-icon">
+                    ➕
+                </div>
+
+                <strong>
+                    New Order
+                </strong>
+
+            </a>
+
+
+
+            <a href="/menu/manage" class="quick-action">
+
+                <div class="quick-icon">
+                    🍕
+                </div>
+
+                <strong>
+                    Manage Menu
+                </strong>
+
+            </a>
+
+
+
+            <a href="/booking" class="quick-action">
+
+                <div class="quick-icon">
+                    📅
+                </div>
+
+                <strong>
+                    Table Booking
+                </strong>
+
+            </a>
+
+
+
+            <a href="/customers" class="quick-action">
+
+                <div class="quick-icon">
+                    👥
+                </div>
+
+                <strong>
+                    Customers
+                </strong>
+
+            </a>
+
+
+
+            <a href="/reports" class="quick-action">
+
+                <div class="quick-icon">
+                    📊
+                </div>
+
+                <strong>
+                    Reports
+                </strong>
+
+            </a>
+
+
+        </div>
+
+
+
+        <!-- =========================
+             DASHBOARD GRID
+        ========================= -->
+
+        <div class="dashboard-grid">
+
+
+            <!-- =========================
+                 RECENT ORDERS
+            ========================= -->
+
+            <div class="card">
+
+
+                <div class="card-header">
+
+                    <h2>
+                        📋 Recent Orders
+                    </h2>
+
+                    <a href="/order" class="view-all">
+                        View All →
+                    </a>
+
+                </div>
+
+
+                {% if orders %}
+
+
+                <input
+                    type="text"
+                    id="orderSearch"
+                    class="search-box"
+                    placeholder="🔎 Search customer, pizza or order..."
+                    onkeyup="searchOrders()"
+                >
+
+
+                <div class="table-wrapper">
+
+
+                    <table id="ordersTable">
+
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Order
+                                </th>
+
+                                <th>
+                                    Customer
+                                </th>
+
+                                <th>
+                                    Pizza
+                                </th>
+
+                                <th>
+                                    Size
+                                </th>
+
+                                <th>
+                                    Qty
+                                </th>
+
+                                <th>
+                                    Total
+                                </th>
+
+                                <th>
+                                    Date
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+
+                            {% for order in orders[:10] %}
+
+
+                            <tr>
+
+                                <td class="order-id">
+                                    #{{ "%05d"|format(order.id) }}
+                                </td>
+
+                                <td class="customer-name">
+                                    {{ order.customer_name }}
+                                </td>
+
+                                <td>
+                                    {{ order.item_name }}
+                                </td>
+
+                                <td>
+                                    {{ order.size }}
+                                </td>
+
+                                <td>
+                                    {{ order.quantity }}
+                                </td>
+
+                                <td class="total">
+                                    ₹{{ "%.2f"|format(order.total) }}
+                                </td>
+
+                                <td>
+                                    {{ order.order_date }}
+                                </td>
+
+                            </tr>
+
+
+                            {% endfor %}
+
+
+                        </tbody>
+
+
+                    </table>
+
+
+                </div>
+
+
+                {% else %}
+
+
+                <div class="empty">
+                    📋 No orders available yet.
+                </div>
+
+
+                {% endif %}
+
+
+            </div>
+
+
+
+            <!-- =========================
+                 BOOKINGS
+            ========================= -->
+
+            <div class="card">
+
+
+                <div class="card-header">
+
+                    <h2>
+                        🪑 Recent Bookings
+                    </h2>
+
+                    <a href="/booking" class="view-all">
+                        View All →
+                    </a>
+
+                </div>
+
+
+                {% if bookings %}
+
+
+                    {% for booking in bookings[:6] %}
+
+
+                    <div class="booking-item">
+
+
+                        <div class="booking-top">
+
+
+                            <div class="booking-name">
+                                {{ booking.customer_name }}
+                            </div>
+
+
+                            {% if booking.status == "Confirmed" %}
+
+
+                                <span class="status confirmed">
+                                    Confirmed
+                                </span>
+
+
+                            {% elif booking.status == "Cancelled" %}
+
+
+                                <span class="status cancelled">
+                                    Cancelled
+                                </span>
+
+
+                            {% else %}
+
+
+                                <span class="status pending">
+                                    Pending
+                                </span>
+
+
+                            {% endif %}
+
+
+                        </div>
+
+
+                        <div class="booking-info">
+
+                            📅 {{ booking.booking_date }}
+
+                            <br>
+
+                            🕐 {{ booking.booking_time }}
+
+                            <br>
+
+                            👥 {{ booking.guests }} Guests
+
+                            <br>
+
+                            🪑 Table {{ booking.table_number or "-" }}
+
+                        </div>
+
+
+                    </div>
+
+
+                    {% endfor %}
+
+
+                {% else %}
+
+
+                    <div class="empty">
+                        🪑 No bookings available.
+                    </div>
+
+
+                {% endif %}
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =========================
+             FOOTER
+        ========================= -->
+
+        <footer>
+
+            © 2026 Pizza House
+            |
+            AI Restaurant Management System
+
+        </footer>
+
+
+    </main>
+
+
+</div>
+
+
+
+<script>
+
+
+function searchOrders() {
+
+
+    let input =
+        document.getElementById("orderSearch");
+
+
+    let filter =
+        input.value.toLowerCase();
+
+
+    let table =
+        document.getElementById("ordersTable");
+
+
+    let rows =
+        table.getElementsByTagName("tr");
+
+
+    for (let i = 1; i < rows.length; i++) {
+
+
+        let text =
+            rows[i].innerText.toLowerCase();
+
+
+        if (text.includes(filter)) {
+
+            rows[i].style.display = "";
+
+        } else {
+
+            rows[i].style.display = "none";
+
+        }
+
+    }
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>

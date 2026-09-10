@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>AI Order Test - Pizza House</title>
+
+    <style>
+
+        body {
+            font-family: Arial;
+            background: #f7f7f7;
+            padding: 40px;
+        }
+
+        .box {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #c62828;
+        }
+
+        textarea {
+            width: 100%;
+            height: 120px;
+            padding: 15px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        button {
+            margin-top: 15px;
+            background: #c62828;
+            color: white;
+            border: none;
+            padding: 13px 25px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        pre {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="box">
+
+    <h1>🤖 Pizza House AI Order Test</h1>
+
+    <p>
+        Type a natural language order:
+    </p>
+
+    <form method="POST">
+
+        <textarea
+            name="customer_text"
+            placeholder="Example: My name is Rahul, my number is 9876543210, I want two large farmhouse pizzas with extra cheese, takeaway."
+            required
+        ></textarea>
+
+        <br>
+
+        <button type="submit">
+            🤖 Understand Order
+        </button>
+
+    </form>
+
+    {% if result %}
+
+        <h2>AI Result</h2>
+
+        <pre>{{ result | tojson(indent=4) }}</pre>
+
+    {% endif %}
+
+</div>
+
+</body>
+
+</html>

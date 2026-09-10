@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Pizza House - Customer Dashboard</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #FAFAFA;
+            color: #222;
+        }
+
+        .header {
+            background: #C62828;
+            color: white;
+            padding: 18px 35px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .logout {
+            background: white;
+            color: #C62828;
+            text-decoration: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 1150px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .welcome {
+            margin-bottom: 25px;
+        }
+
+        .welcome h1 {
+            margin-bottom: 5px;
+        }
+
+        .welcome p {
+            color: #777;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        .card-icon {
+            font-size: 40px;
+        }
+
+        .card h3 {
+            margin: 12px 0;
+        }
+
+        .action {
+            display: inline-block;
+            background: #C62828;
+            color: white;
+            text-decoration: none;
+            padding: 11px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .action:hover {
+            background: #A61C1C;
+        }
+
+        .orders {
+            margin-top: 35px;
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            text-align: left;
+        }
+
+        th {
+            background: #FDECEC;
+            color: #C62828;
+        }
+
+        .empty {
+            color: #777;
+            text-align: center;
+            padding: 25px;
+        }
+
+        @media(max-width: 800px) {
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                padding: 15px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+<div class="header">
+
+    <div class="brand">
+        🍕 Pizza House
+    </div>
+
+    <a
+        href="{{ url_for('logout') }}"
+        class="logout">
+
+        Logout
+
+    </a>
+
+</div>
+
+
+<div class="container">
+
+
+    <div class="welcome">
+
+        <h1>
+            Welcome, {{ name }} 👋
+        </h1>
+
+        <p>
+            Manage your Pizza House orders and bookings.
+        </p>
+
+    </div>
+
+
+    <div class="cards">
+
+
+        <!-- VOICE ORDER -->
+
+        <div class="card">
+
+            <div class="card-icon">
+                🎙️
+            </div>
+
+            <h3>
+                AI Voice Order
+            </h3>
+
+            <p>
+                Speak naturally and place your pizza order.
+            </p>
+
+            <a
+                href="{{ url_for('voice_order') }}"
+                class="action">
+
+                Start Voice Order
+
+            </a>
+
+        </div>
+
+
+        <!-- NORMAL ORDER -->
+
+        <div class="card">
+
+            <div class="card-icon">
+                🍕
+            </div>
+
+            <h3>
+                Order Pizza
+            </h3>
+
+            <p>
+                Browse our pizzas and place an order.
+            </p>
+
+            <a
+                href="{{ url_for('menu') }}"
+                class="action">
+
+                View Menu
+
+            </a>
+
+        </div>
+
+
+        <!-- BOOKING -->
+
+        <div class="card">
+
+            <div class="card-icon">
+                📅
+            </div>
+
+            <h3>
+                Book a Table
+            </h3>
+
+            <p>
+                Reserve a table at Pizza House.
+            </p>
+
+            <a
+                href="{{ url_for('booking') }}"
+                class="action">
+
+                Book Table
+
+            </a>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- CUSTOMER ORDERS -->
+
+    <div class="orders">
+
+        <h2>
+            📋 My Orders
+        </h2>
+
+
+        {% if orders %}
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Order ID
+                    </th>
+
+                    <th>
+                        Pizza
+                    </th>
+
+                    <th>
+                        Size
+                    </th>
+
+                    <th>
+                        Quantity
+                    </th>
+
+                    <th>
+                        Total
+                    </th>
+
+                    <th>
+                        Date
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+            {% for order in orders %}
+
+                <tr>
+
+                    <td>
+                        #{{ order["id"] }}
+                    </td>
+
+                    <td>
+                        {{ order["item_name"] }}
+                    </td>
+
+                    <td>
+                        {{ order["size"] }}
+                    </td>
+
+                    <td>
+                        {{ order["quantity"] }}
+                    </td>
+
+                    <td>
+                        ₹{{ "%.2f"|format(order["total"]) }}
+                    </td>
+
+                    <td>
+                        {{ order["order_date"] }}
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+        {% else %}
+
+        <div class="empty">
+
+            You haven't placed any orders yet. 🍕
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+
+</div>
+
+</body>
+
+</html>

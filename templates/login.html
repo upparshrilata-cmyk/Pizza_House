@@ -1,0 +1,214 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Pizza House - Login</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #FAFAFA;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-container {
+            width: 420px;
+            background: white;
+            padding: 40px;
+            border-radius: 18px;
+            box-shadow: 0 10px 35px rgba(0,0,0,0.12);
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 55px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #C62828;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #777;
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 7px;
+            font-weight: bold;
+            color: #222;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #C62828;
+        }
+
+        .login-btn {
+            width: 100%;
+            margin-top: 25px;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background: #C62828;
+            color: white;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .login-btn:hover {
+            background: #A61C1C;
+        }
+
+        .error {
+            background: #FDECEC;
+            color: #C62828;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="login-container">
+
+
+    <div class="logo">
+        🍕
+    </div>
+
+
+    <h1>
+        Pizza House
+    </h1>
+
+
+    <div class="subtitle">
+        Login to continue
+    </div>
+
+
+    {% if error %}
+
+    <div class="error">
+        {{ error }}
+    </div>
+
+    {% endif %}
+
+
+    <form
+        method="POST"
+        action="{{ url_for('login') }}"
+    >
+
+
+        <label>
+            Login As
+        </label>
+
+
+        <select
+            name="role"
+            required
+        >
+
+            <option value="">
+                Select Role
+            </option>
+
+            <option value="admin">
+                👨‍💼 Admin
+            </option>
+
+            <option value="customer">
+                👤 Customer
+            </option>
+
+        </select>
+
+
+        <label>
+            Username
+        </label>
+
+
+        <input
+            type="text"
+            name="username"
+            placeholder="Enter username"
+            required
+        >
+
+
+        <label>
+            Password
+        </label>
+
+
+        <input
+            type="password"
+            name="password"
+            placeholder="Enter password"
+            required
+        >
+
+
+        <button
+            type="submit"
+            class="login-btn"
+        >
+
+            🔐 Login
+
+        </button>
+
+
+    </form>
+
+
+</div>
+
+
+</body>
+
+</html>

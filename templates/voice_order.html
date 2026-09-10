@@ -1,0 +1,2590 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AI Voice Ordering - Pizza House</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #fafafa;
+    color: #222;
+}
+
+/* HEADER */
+.header {
+    background: #c62828;
+    color: white;
+    padding: 18px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header h1 {
+    margin: 0;
+}
+
+.home-btn {
+    background: #a61c1c;
+    color: white;
+    text-decoration: none;
+    padding: 10px 18px;
+    border-radius: 7px;
+}
+
+/* CONTAINER */
+.container {
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+/* TITLE */
+.title {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.title h2 {
+    color: #c62828;
+    font-size: 30px;
+    margin-bottom: 8px;
+}
+
+.title p {
+    color: #666;
+}
+
+/* CARDS */
+.voice-card,
+.order-card {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    margin-bottom: 25px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+}
+
+/* VOICE */
+.voice-card {
+    text-align: center;
+}
+
+.microphone {
+    font-size: 70px;
+    margin-bottom: 10px;
+}
+
+.status {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 15px;
+    color: #555;
+    min-height: 28px;
+}
+
+.record-btn {
+    border: none;
+    background: #c62828;
+    color: white;
+    padding: 16px 35px;
+    border-radius: 8px;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.record-btn:hover {
+    background: #a61c1c;
+}
+
+.record-btn.listening {
+    background: #8e0000;
+    animation: pulse 1.2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.stop-btn {
+    margin-top: 12px;
+    border: none;
+    background: #555;
+    color: white;
+    padding: 10px 22px;
+    border-radius: 7px;
+    cursor: pointer;
+}
+
+.timer {
+    margin-top: 12px;
+    font-size: 15px;
+    color: #777;
+}
+
+/* CONVERSATION */
+.conversation {
+    margin-top: 25px;
+    max-height: 350px;
+    overflow-y: auto;
+    text-align: left;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    padding: 18px;
+    background: #fafafa;
+}
+
+.message-row {
+    margin-bottom: 18px;
+}
+
+.message-label {
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+
+.customer-label {
+    color: #555;
+}
+
+.ai-label {
+    color: #c62828;
+}
+
+.message-text {
+    background: white;
+    border-radius: 8px;
+    padding: 12px;
+    line-height: 1.5;
+    border: 1px solid #eee;
+}
+
+/* HEARD */
+.heard {
+    margin-top: 20px;
+    padding: 18px;
+    background: #f5f5f5;
+    border-radius: 10px;
+    text-align: left;
+}
+
+.heard-title {
+    font-weight: bold;
+    color: #c62828;
+    margin-bottom: 8px;
+}
+
+.heard-text {
+    font-size: 17px;
+    line-height: 1.5;
+    min-height: 25px;
+}
+
+/* ORDER */
+.order-card h2 {
+    color: #c62828;
+    margin-top: 0;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+}
+
+.field label {
+    font-weight: bold;
+    margin-bottom: 7px;
+}
+
+.field input,
+.field select {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+    font-size: 15px;
+    background: white;
+}
+
+.auto-filled {
+    border: 2px solid #2e7d32 !important;
+    background: #f1fff2 !important;
+}
+
+/* BILL */
+.bill {
+    margin-top: 25px;
+    background: #fdecec;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.bill-row {
+    display: flex;
+    justify-content: space-between;
+    margin: 9px 0;
+}
+
+.grand-total {
+    border-top: 2px solid #c62828;
+    padding-top: 12px;
+    margin-top: 12px;
+    font-size: 21px;
+    font-weight: bold;
+    color: #c62828;
+}
+
+/* SAVE */
+.save-btn {
+    width: 100%;
+    margin-top: 25px;
+    border: none;
+    background: #2e7d32;
+    color: white;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.save-btn:hover {
+    background: #256628;
+}
+
+/* MESSAGE */
+.message {
+    display: none;
+    padding: 13px;
+    margin-top: 15px;
+    border-radius: 7px;
+    text-align: center;
+}
+
+.success {
+    display: block;
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.error {
+    display: block;
+    background: #ffebee;
+    color: #c62828;
+}
+
+.info {
+    display: block;
+    background: #e3f2fd;
+    color: #1565c0;
+}
+
+/* COMPLETE */
+.complete-box {
+    display: none;
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 10px;
+    background: #e8f5e9;
+    color: #2e7d32;
+    font-weight: bold;
+}
+
+@media(max-width: 700px) {
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .header {
+        padding: 15px 20px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+
+    <h1>🍕 Pizza House</h1>
+
+    <a href="/" class="home-btn">
+        ← Home
+    </a>
+
+</div>
+
+
+<div class="container">
+
+<div class="title">
+
+    <h2>🤖 AI Voice Ordering</h2>
+
+    <p>
+        Talk naturally with Pizza House AI.
+    </p>
+
+</div>
+
+
+<!-- ================= VOICE CARD ================= -->
+
+<div class="voice-card">
+
+    <div class="microphone">
+        🎤
+    </div>
+
+    <div
+        class="status"
+        id="status"
+    >
+        Click "Start AI Conversation" to begin.
+    </div>
+
+
+    <button
+        type="button"
+        class="record-btn"
+        id="recordBtn"
+        onclick="startConversation()"
+    >
+        🎙️ Start AI Conversation
+    </button>
+
+
+    <button
+        type="button"
+        class="stop-btn"
+        id="stopBtn"
+        onclick="stopConversation()"
+        style="display:none;"
+    >
+        ⏹ Stop Conversation
+    </button>
+
+
+    <div
+        class="timer"
+        id="timer"
+    >
+        Ready
+    </div>
+
+
+    <!-- CONVERSATION -->
+
+    <div
+        class="conversation"
+        id="conversation"
+    >
+
+        <div class="message-row">
+
+            <div class="message-label ai-label">
+                🤖 Pizza House AI
+            </div>
+
+            <div class="message-text">
+                Hello! Welcome to Pizza House.
+                Click the button above to start your order.
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- WHAT AI HEARD -->
+
+    <div class="heard">
+
+        <div class="heard-title">
+            🗣️ What AI heard
+        </div>
+
+        <div
+            class="heard-text"
+            id="heardText"
+        >
+            Nothing yet.
+        </div>
+
+    </div>
+
+
+    <div
+        id="message"
+        class="message"
+    ></div>
+
+
+    <div
+        id="completeBox"
+        class="complete-box"
+    >
+        ✅ AI has collected all order details.
+        <br><br>
+        Please check the order details below and click
+        "Confirm & Save Order".
+    </div>
+
+</div>
+
+
+<!-- ================= ORDER CARD ================= -->
+
+<div class="order-card">
+
+    <h2>📋 Current Order</h2>
+
+
+    <form
+        action="/voice-order/submit"
+        method="POST"
+        id="orderForm"
+    >
+
+        <div class="grid">
+
+
+            <!-- CUSTOMER NAME -->
+
+            <div class="field">
+
+                <label>
+                    Customer Name
+                </label>
+
+                <input
+                    type="text"
+                    id="customer_name"
+                    name="customer_name"
+                    required
+                >
+
+            </div>
+
+
+            <!-- MOBILE -->
+
+            <div class="field">
+
+                <label>
+                    Mobile Number
+                </label>
+
+                <input
+                    type="text"
+                    id="mobile"
+                    name="mobile"
+                    maxlength="10"
+                    required
+                >
+
+            </div>
+
+
+            <!-- PIZZA -->
+
+            <div class="field">
+
+                <label>
+                    Pizza
+                </label>
+
+                <select
+                    id="item_name"
+                    name="item_name"
+                    onchange="calculateBill()"
+                    required
+                >
+
+                    <option value="">
+                        Select Pizza
+                    </option>
+
+                    <option value="Margherita">
+                        Margherita
+                    </option>
+
+                    <option value="Farmhouse">
+                        Farmhouse
+                    </option>
+
+                    <option value="Pepperoni">
+                        Pepperoni
+                    </option>
+
+                    <option value="Cheese Pizza">
+                        Cheese Pizza
+                    </option>
+
+                    <option value="Veg Pizza">
+                        Veg Pizza
+                    </option>
+
+                    <option value="Paneer Pizza">
+                        Paneer Pizza
+                    </option>
+
+                    <option value="Corn Pizza">
+                        Corn Pizza
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- SIZE -->
+
+            <div class="field">
+
+                <label>
+                    Size
+                </label>
+
+                <select
+                    id="size"
+                    name="size"
+                    onchange="calculateBill()"
+                    required
+                >
+
+                    <option value="">
+                        Select Size
+                    </option>
+
+                    <option value="Small">
+                        Small
+                    </option>
+
+                    <option value="Medium">
+                        Medium
+                    </option>
+
+                    <option value="Large">
+                        Large
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- QUANTITY -->
+
+            <div class="field">
+
+                <label>
+                    Quantity
+                </label>
+
+                <input
+                    type="number"
+                    id="quantity"
+                    name="quantity"
+                    value="1"
+                    min="1"
+                    max="10"
+                    onchange="calculateBill()"
+                    required
+                >
+
+            </div>
+
+
+            <!-- TOPPINGS -->
+
+            <div class="field">
+
+                <label>
+                    Toppings
+                </label>
+
+                <input
+                    type="text"
+                    id="toppings"
+                    name="toppings"
+                    value="None"
+                >
+
+            </div>
+
+
+            <!-- ORDER TYPE -->
+
+            <div class="field">
+
+                <label>
+                    Order Type
+                </label>
+
+                <select
+                    id="order_type"
+                    name="order_type"
+                    required
+                >
+
+                    <option value="">
+                        Select Order Type
+                    </option>
+
+                    <option value="Dine In">
+                        Dine In
+                    </option>
+
+                    <option value="Take Away">
+                        Take Away
+                    </option>
+
+                    <option value="Delivery">
+                        Delivery
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <!-- BILL -->
+
+        <div class="bill">
+
+            <div class="bill-row">
+
+                <span>Price</span>
+
+                <span id="price">
+                    ₹0.00
+                </span>
+
+            </div>
+
+
+            <div class="bill-row">
+
+                <span>Quantity</span>
+
+                <span id="billQuantity">
+                    1
+                </span>
+
+            </div>
+
+
+            <div class="bill-row">
+
+                <span>Subtotal</span>
+
+                <span id="subtotal">
+                    ₹0.00
+                </span>
+
+            </div>
+
+
+            <div class="bill-row">
+
+                <span>GST (5%)</span>
+
+                <span id="gst">
+                    ₹0.00
+                </span>
+
+            </div>
+
+
+            <div class="bill-row grand-total">
+
+                <span>Grand Total</span>
+
+                <span id="total">
+                    ₹0.00
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <button
+            type="submit"
+            class="save-btn"
+        >
+            ✅ Confirm & Save Order
+        </button>
+
+    </form>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* ==========================================================
+   SPEECH RECOGNITION
+========================================================== */
+
+const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+
+let recognition = null;
+
+let conversationRunning = false;
+
+let currentlyListening = false;
+
+let currentStep = 0;
+
+let retryCount = 0;
+
+let timerInterval = null;
+
+let seconds = 0;
+
+
+/* ==========================================================
+   QUESTIONS
+========================================================== */
+
+const questions = [
+
+    {
+        field: "customer",
+        question:
+            "Hello! Welcome to Pizza House. What is your name?"
+    },
+
+    {
+        field: "mobile",
+        question:
+            "Thank you. What is your 10 digit mobile number?"
+    },
+
+    {
+        field: "item",
+        question:
+            "What pizza would you like to order?"
+    },
+
+    {
+        field: "size",
+        question:
+            "What size would you like? Small, Medium or Large?"
+    },
+
+    {
+        field: "quantity",
+        question:
+            "How many pizzas would you like?"
+    },
+
+    {
+        field: "toppings",
+        question:
+            "Would you like any toppings? You can say extra cheese, olives, mushroom, jalapeno, or none."
+    },
+
+    {
+        field: "order_type",
+        question:
+            "Would you like Dine In, Take Away, or Delivery?"
+    }
+
+];
+
+
+/* ==========================================================
+   START
+========================================================== */
+
+function startConversation() {
+
+    if (!SpeechRecognition) {
+
+        showMessage(
+            "Please use Google Chrome or Microsoft Edge for voice ordering.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    conversationRunning = true;
+
+    currentlyListening = false;
+
+    currentStep = 0;
+
+    retryCount = 0;
+
+
+    clearOrder();
+
+
+    document.getElementById("conversation").innerHTML = "";
+
+
+    document.getElementById("heardText").innerText =
+        "Nothing yet.";
+
+
+    document.getElementById("completeBox").style.display =
+        "none";
+
+
+    document.getElementById("recordBtn").style.display =
+        "none";
+
+
+    document.getElementById("stopBtn").style.display =
+        "inline-block";
+
+
+    document.getElementById("status").innerText =
+        "🤖 AI is starting the conversation...";
+
+
+    showMessage(
+        "AI conversation started.",
+        "info"
+    );
+
+
+    askCurrentQuestion();
+}
+
+
+/* ==========================================================
+   ASK QUESTION
+========================================================== */
+
+function askCurrentQuestion() {
+
+    if (!conversationRunning) {
+        return;
+    }
+
+
+    if (currentStep >= questions.length) {
+
+        finishConversation();
+
+        return;
+    }
+
+
+    const question =
+        questions[currentStep].question;
+
+
+    addMessage(
+        "🤖 Pizza House AI",
+        question,
+        "ai"
+    );
+
+
+    document.getElementById("status").innerText =
+        "🔊 AI is speaking...";
+
+
+    speakText(
+        question,
+        function() {
+
+            if (!conversationRunning) {
+                return;
+            }
+
+            /*
+             IMPORTANT:
+             Microphone starts ONLY AFTER
+             AI FINISHES SPEAKING.
+            */
+
+            setTimeout(
+                function() {
+
+                    if (conversationRunning) {
+
+                        startListening();
+
+                    }
+
+                },
+                300
+            );
+
+        }
+    );
+}
+
+
+/* ==========================================================
+   AI SPEAK
+========================================================== */
+
+function speakText(text, callback) {
+
+    if (!("speechSynthesis" in window)) {
+
+        if (callback) {
+            callback();
+        }
+
+        return;
+    }
+
+
+    window.speechSynthesis.cancel();
+
+
+    const speech =
+        new SpeechSynthesisUtterance(text);
+
+
+    speech.lang = "en-IN";
+
+    speech.rate = 0.95;
+
+    speech.pitch = 1;
+
+    speech.volume = 1;
+
+
+    speech.onend = function() {
+
+        if (callback) {
+            callback();
+        }
+
+    };
+
+
+    speech.onerror = function() {
+
+        if (callback) {
+            callback();
+        }
+
+    };
+
+
+    window.speechSynthesis.speak(speech);
+}
+
+
+/* ==========================================================
+   START LISTENING
+========================================================== */
+
+function startListening() {
+
+    if (!conversationRunning) {
+        return;
+    }
+
+
+    if (currentlyListening) {
+        return;
+    }
+
+
+    try {
+
+        recognition =
+            new SpeechRecognition();
+
+
+        recognition.lang =
+            "en-IN";
+
+
+        recognition.continuous =
+            false;
+
+
+        recognition.interimResults =
+            false;
+
+
+        recognition.maxAlternatives =
+            1;
+
+
+        recognition.onstart =
+            function() {
+
+                currentlyListening = true;
+
+
+                document.getElementById("status").innerText =
+                    "🎤 Listening... Speak now.";
+
+
+                document.getElementById("recordBtn")
+                    .classList.add("listening");
+
+
+                startTimer();
+
+            };
+
+
+        recognition.onresult =
+            function(event) {
+
+                currentlyListening = false;
+
+
+                stopTimer();
+
+
+                const transcript =
+                    event.results[0][0]
+                        .transcript
+                        .trim();
+
+
+                document.getElementById("heardText")
+                    .innerText =
+                    transcript;
+
+
+                addMessage(
+                    "🗣️ You",
+                    transcript,
+                    "customer"
+                );
+
+
+                processAnswer(transcript);
+
+            };
+
+
+        recognition.onerror =
+            function(event) {
+
+                console.log(
+                    "Speech error:",
+                    event.error
+                );
+
+
+                currentlyListening = false;
+
+
+                stopTimer();
+
+
+                document.getElementById("recordBtn")
+                    .classList.remove("listening");
+
+
+                if (event.error === "not-allowed") {
+
+                    showMessage(
+                        "Microphone permission was denied. Please allow microphone access.",
+                        "error"
+                    );
+
+
+                    stopConversation();
+
+                    return;
+                }
+
+
+                if (event.error === "no-speech") {
+
+                    showMessage(
+                        "I could not hear you. Please speak again.",
+                        "error"
+                    );
+
+
+                    retryListening();
+
+                    return;
+                }
+
+
+                retryListening();
+
+            };
+
+
+        recognition.onend =
+            function() {
+
+                currentlyListening = false;
+
+                stopTimer();
+
+                document.getElementById("recordBtn")
+                    .classList.remove("listening");
+
+            };
+
+
+        recognition.start();
+
+    }
+
+    catch(error) {
+
+        console.error(error);
+
+        currentlyListening = false;
+
+        stopTimer();
+
+
+        showMessage(
+            "Could not start microphone. Please check browser permission.",
+            "error"
+        );
+
+    }
+
+}
+
+
+/* ==========================================================
+   RETRY
+========================================================== */
+
+function retryListening() {
+
+    if (!conversationRunning) {
+        return;
+    }
+
+
+    retryCount++;
+
+
+    if (retryCount >= 3) {
+
+        retryCount = 0;
+
+
+        const retryQuestion =
+            "Sorry, I could not hear you clearly. Please answer again.";
+
+
+        addMessage(
+            "🤖 Pizza House AI",
+            retryQuestion,
+            "ai"
+        );
+
+
+        speakText(
+            retryQuestion,
+            function() {
+
+                if (conversationRunning) {
+
+                    setTimeout(
+                        startListening,
+                        300
+                    );
+
+                }
+
+            }
+        );
+
+        return;
+    }
+
+
+    setTimeout(
+        function() {
+
+            if (conversationRunning) {
+
+                startListening();
+
+            }
+
+        },
+        800
+    );
+}
+
+
+/* ==========================================================
+   PROCESS ANSWER
+========================================================== */
+
+function processAnswer(answer) {
+
+    if (!conversationRunning) {
+        return;
+    }
+
+
+    const field =
+        questions[currentStep].field;
+
+
+    const text =
+        answer
+            .toLowerCase()
+            .trim();
+
+
+    let valid = false;
+
+
+    /* ================= CUSTOMER ================= */
+
+    if (field === "customer") {
+
+        let customer =
+            answer.trim();
+
+
+        customer =
+            customer.replace(
+                /^(my name is|my name's|i am|i'm|this is)\s+/i,
+                ""
+            );
+
+
+        if (
+            customer.length >= 2 &&
+            !/^[0-9]+$/.test(customer)
+        ) {
+
+            customer =
+                customer
+                    .replace(/\s+/g, " ")
+                    .trim();
+
+
+            customer =
+                customer
+                    .split(" ")
+                    .map(function(word) {
+
+                        return word.charAt(0).toUpperCase()
+                            + word.slice(1).toLowerCase();
+
+                    })
+                    .join(" ");
+
+
+            document.getElementById(
+                "customer_name"
+            ).value = customer;
+
+
+            markAutoFilled("customer_name");
+
+
+            valid = true;
+        }
+
+        else {
+
+            showMessage(
+                "Please say your name.",
+                "error"
+            );
+
+        }
+
+    }
+
+
+    /* ================= MOBILE ================= */
+
+    else if (field === "mobile") {
+
+        let digits =
+            answer.replace(/\D/g, "");
+
+
+        if (digits.length !== 10) {
+
+            digits =
+                convertSpokenNumber(answer);
+
+        }
+
+
+        if (digits.length === 10) {
+
+            document.getElementById(
+                "mobile"
+            ).value = digits;
+
+
+            markAutoFilled("mobile");
+
+
+            valid = true;
+
+        }
+
+        else {
+
+            showMessage(
+                "Please say your complete 10 digit mobile number.",
+                "error"
+            );
+
+        }
+
+    }
+
+
+    /* ================= PIZZA ================= */
+
+    else if (field === "item") {
+
+        const pizza =
+            findPizza(text);
+
+
+        if (pizza) {
+
+            document.getElementById(
+                "item_name"
+            ).value = pizza;
+
+
+            markAutoFilled("item_name");
+
+
+            calculateBill();
+
+
+            valid = true;
+
+        }
+
+        else {
+
+            showMessage(
+                "Please say a pizza name such as Margherita, Farmhouse, Pepperoni, Paneer Pizza or Corn Pizza.",
+                "error"
+            );
+
+        }
+
+    }
+
+
+    /* ================= SIZE ================= */
+
+    else if (field === "size") {
+
+        let size = "";
+
+
+        if (
+            text.includes("large") ||
+            text.includes("big")
+        ) {
+
+            size = "Large";
+
+        }
+
+        else if (
+            text.includes("medium") ||
+            text.includes("middle")
+        ) {
+
+            size = "Medium";
+
+        }
+
+        else if (
+            text.includes("small") ||
+            text.includes("mini")
+        ) {
+
+            size = "Small";
+
+        }
+
+
+        if (size) {
+
+            document.getElementById(
+                "size"
+            ).value = size;
+
+
+            markAutoFilled("size");
+
+
+            calculateBill();
+
+
+            valid = true;
+
+        }
+
+        else {
+
+            showMessage(
+                "Please say Small, Medium or Large.",
+                "error"
+            );
+
+        }
+
+    }
+
+
+    /* ================= QUANTITY ================= */
+
+    else if (field === "quantity") {
+
+        const quantity =
+            extractQuantity(text);
+
+
+        if (
+            quantity >= 1 &&
+            quantity <= 10
+        ) {
+
+            document.getElementById(
+                "quantity"
+            ).value = quantity;
+
+
+            markAutoFilled("quantity");
+
+
+            calculateBill();
+
+
+            valid = true;
+
+        }
+
+        else {
+
+            showMessage(
+                "Please say a quantity from 1 to 10.",
+                "error"
+            );
+
+        }
+
+    }
+
+
+    /* ================= TOPPINGS ================= */
+
+    else if (field === "toppings") {
+
+        if (
+            text === "none" ||
+            text === "no" ||
+            text.includes("no topping") ||
+            text.includes("no toppings") ||
+            text.includes("nothing") ||
+            text.includes("without topping")
+        ) {
+
+            document.getElementById(
+                "toppings"
+            ).value = "None";
+
+
+            markAutoFilled("toppings");
+
+
+            valid = true;
+
+        }
+
+        else {
+
+            const toppings = [];
+
+
+            if (
+                text.includes("cheese")
+            ) {
+
+                toppings.push(
+                    "Extra Cheese"
+                );
+
+            }
+
+
+            if (
+                text.includes("olive")
+            ) {
+
+                toppings.push(
+                    "Olives"
+                );
+
+            }
+
+
+            if (
+                text.includes("mushroom")
+            ) {
+
+                toppings.push(
+                    "Mushroom"
+                );
+
+            }
+
+
+            if (
+                text.includes("jalapeno") ||
+                text.includes("jalapeño")
+            ) {
+
+                toppings.push(
+                    "Jalapeno"
+                );
+
+            }
+
+
+            if (toppings.length > 0) {
+
+                document.getElementById(
+                    "toppings"
+                ).value =
+                    [...new Set(toppings)]
+                    .join(" + ");
+
+
+                markAutoFilled("toppings");
+
+
+                valid = true;
+
+            }
+
+        }
+
+
+        if (!valid) {
+
+            showMessage(
+                "Please say a topping or say none.",
+                "error"
+            );
+
+        }
+
+    }
+
+
+    /* ================= ORDER TYPE ================= */
+
+    else if (field === "order_type") {
+
+        let orderType = "";
+
+
+        if (
+            text.includes("delivery")
+        ) {
+
+            orderType =
+                "Delivery";
+
+        }
+
+        else if (
+            text.includes("take away") ||
+            text.includes("takeaway") ||
+            text.includes("take out") ||
+            text.includes("parcel") ||
+            text.includes("pickup") ||
+            text.includes("pick up")
+        ) {
+
+            orderType =
+                "Take Away";
+
+        }
+
+        else if (
+            text.includes("dine in") ||
+            text.includes("dine-in") ||
+            text.includes("dining") ||
+            text === "here" ||
+            text.includes("eat here")
+        ) {
+
+            orderType =
+                "Dine In";
+
+        }
+
+
+        if (orderType) {
+
+            document.getElementById(
+                "order_type"
+            ).value =
+                orderType;
+
+
+            markAutoFilled("order_type");
+
+
+            valid = true;
+
+        }
+
+        else {
+
+            showMessage(
+                "Please say Dine In, Take Away or Delivery.",
+                "error"
+            );
+
+        }
+
+    }
+
+
+    /* ================= NEXT STEP ================= */
+
+    if (valid) {
+
+        retryCount = 0;
+
+
+        currentStep++;
+
+
+        if (
+            currentStep <
+            questions.length
+        ) {
+
+            setTimeout(
+                function() {
+
+                    askCurrentQuestion();
+
+                },
+                500
+            );
+
+        }
+
+        else {
+
+            finishConversation();
+
+        }
+
+    }
+
+    else {
+
+        /*
+        Invalid answer:
+        SAME QUESTION will be asked again.
+        */
+
+        setTimeout(
+            function() {
+
+                if (conversationRunning) {
+
+                    askCurrentQuestion();
+
+                }
+
+            },
+            1000
+        );
+
+    }
+
+}
+
+
+/* ==========================================================
+   FINISH
+========================================================== */
+
+function finishConversation() {
+
+    conversationRunning = false;
+
+    currentlyListening = false;
+
+
+    if (recognition) {
+
+        try {
+            recognition.stop();
+        }
+
+        catch(error) {
+            console.log(error);
+        }
+
+    }
+
+
+    stopTimer();
+
+
+    const customer =
+        document.getElementById(
+            "customer_name"
+        ).value;
+
+
+    const item =
+        document.getElementById(
+            "item_name"
+        ).value;
+
+
+    const size =
+        document.getElementById(
+            "size"
+        ).value;
+
+
+    const quantity =
+        document.getElementById(
+            "quantity"
+        ).value;
+
+
+    const toppings =
+        document.getElementById(
+            "toppings"
+        ).value;
+
+
+    const orderType =
+        document.getElementById(
+            "order_type"
+        ).value;
+
+
+    let summary =
+        "Order details are ready, " +
+        customer +
+        ". You selected " +
+        quantity +
+        " " +
+        size +
+        " " +
+        item +
+        " pizza";
+
+
+    if (
+        toppings &&
+        toppings !== "None"
+    ) {
+
+        summary +=
+            " with " +
+            toppings;
+
+    }
+
+
+    summary +=
+        " for " +
+        orderType +
+        ". Please check the details and click Confirm and Save Order.";
+
+
+    addMessage(
+        "🤖 Pizza House AI",
+        summary,
+        "ai"
+    );
+
+
+    speakText(summary);
+
+
+    document.getElementById("status").innerText =
+        "✅ All order details collected successfully.";
+
+
+    document.getElementById("completeBox").style.display =
+        "block";
+
+
+    document.getElementById("recordBtn").style.display =
+        "inline-block";
+
+
+    document.getElementById("recordBtn").innerText =
+        "🔄 Start New Conversation";
+
+
+    document.getElementById("stopBtn").style.display =
+        "none";
+
+
+    document.getElementById("recordBtn")
+        .classList.remove("listening");
+
+
+    showMessage(
+        "All order details have been collected. Please check the order and save it.",
+        "success"
+    );
+
+
+    calculateBill();
+}
+
+
+/* ==========================================================
+   STOP
+========================================================== */
+
+function stopConversation() {
+
+    conversationRunning = false;
+
+    currentlyListening = false;
+
+
+    if (recognition) {
+
+        try {
+            recognition.stop();
+        }
+
+        catch(error) {
+            console.log(error);
+        }
+
+    }
+
+
+    if ("speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
+    }
+
+
+    stopTimer();
+
+
+    document.getElementById("status").innerText =
+        "⏹ Conversation stopped.";
+
+
+    document.getElementById("recordBtn").style.display =
+        "inline-block";
+
+
+    document.getElementById("recordBtn").innerText =
+        "🎙️ Start AI Conversation";
+
+
+    document.getElementById("stopBtn").style.display =
+        "none";
+
+
+    document.getElementById("recordBtn")
+        .classList.remove("listening");
+
+}
+
+
+/* ==========================================================
+   FIND PIZZA
+========================================================== */
+
+function findPizza(text) {
+
+    if (text.includes("margherita")) {
+        return "Margherita";
+    }
+
+
+    if (text.includes("farmhouse")) {
+        return "Farmhouse";
+    }
+
+
+    if (text.includes("pepperoni")) {
+        return "Pepperoni";
+    }
+
+
+    if (
+        text.includes("cheese pizza") ||
+        text === "cheese"
+    ) {
+        return "Cheese Pizza";
+    }
+
+
+    if (
+        text.includes("veg pizza") ||
+        text.includes("vegetable pizza") ||
+        text.includes("veggie") ||
+        text === "veg"
+    ) {
+        return "Veg Pizza";
+    }
+
+
+    if (
+        text.includes("paneer pizza") ||
+        text.includes("paneer")
+    ) {
+        return "Paneer Pizza";
+    }
+
+
+    if (
+        text.includes("corn pizza") ||
+        text.includes("corn")
+    ) {
+        return "Corn Pizza";
+    }
+
+
+    return "";
+}
+
+
+/* ==========================================================
+   QUANTITY
+========================================================== */
+
+function extractQuantity(text) {
+
+    const numbers = {
+
+        "one": 1,
+        "two": 2,
+        "three": 3,
+        "four": 4,
+        "five": 5,
+        "six": 6,
+        "seven": 7,
+        "eight": 8,
+        "nine": 9,
+        "ten": 10
+
+    };
+
+
+    for (
+        const word in numbers
+    ) {
+
+        const regex =
+            new RegExp(
+                "\\b" +
+                word +
+                "\\b"
+            );
+
+
+        if (regex.test(text)) {
+
+            return numbers[word];
+
+        }
+
+    }
+
+
+    const match =
+        text.match(
+            /\b(10|[1-9])\b/
+        );
+
+
+    if (match) {
+
+        return parseInt(
+            match[1]
+        );
+
+    }
+
+
+    return 0;
+}
+
+
+/* ==========================================================
+   SPOKEN MOBILE NUMBER
+========================================================== */
+
+function convertSpokenNumber(text) {
+
+    const map = {
+
+        zero: "0",
+        oh: "0",
+
+        one: "1",
+        two: "2",
+        three: "3",
+        four: "4",
+        five: "5",
+
+        six: "6",
+        seven: "7",
+        eight: "8",
+        nine: "9"
+
+    };
+
+
+    const words =
+        text
+            .toLowerCase()
+            .replace(/[-,]/g, " ")
+            .split(/\s+/);
+
+
+    let result = "";
+
+
+    words.forEach(
+        function(word) {
+
+            if (
+                map[word] !== undefined
+            ) {
+
+                result += map[word];
+
+            }
+
+        }
+    );
+
+
+    return result;
+}
+
+
+/* ==========================================================
+   AUTO FILL EFFECT
+========================================================== */
+
+function markAutoFilled(id) {
+
+    const element =
+        document.getElementById(id);
+
+
+    element.classList.add(
+        "auto-filled"
+    );
+
+
+    setTimeout(
+        function() {
+
+            element.classList.remove(
+                "auto-filled"
+            );
+
+        },
+        1500
+    );
+}
+
+
+/* ==========================================================
+   CLEAR ORDER
+========================================================== */
+
+function clearOrder() {
+
+    document.getElementById(
+        "customer_name"
+    ).value = "";
+
+
+    document.getElementById(
+        "mobile"
+    ).value = "";
+
+
+    document.getElementById(
+        "item_name"
+    ).value = "";
+
+
+    document.getElementById(
+        "size"
+    ).value = "";
+
+
+    document.getElementById(
+        "quantity"
+    ).value = "1";
+
+
+    document.getElementById(
+        "toppings"
+    ).value = "None";
+
+
+    document.getElementById(
+        "order_type"
+    ).value = "";
+
+
+    calculateBill();
+}
+
+
+/* ==========================================================
+   MESSAGE
+========================================================== */
+
+function showMessage(text, type) {
+
+    const message =
+        document.getElementById(
+            "message"
+        );
+
+
+    message.innerText = text;
+
+
+    message.className =
+        "message " + type;
+}
+
+
+/* ==========================================================
+   CHAT MESSAGE
+========================================================== */
+
+function addMessage(
+    label,
+    text,
+    type
+) {
+
+    const conversation =
+        document.getElementById(
+            "conversation"
+        );
+
+
+    const row =
+        document.createElement(
+            "div"
+        );
+
+
+    row.className =
+        "message-row";
+
+
+    const labelElement =
+        document.createElement(
+            "div"
+        );
+
+
+    labelElement.className =
+        "message-label " +
+        (
+            type === "ai"
+                ? "ai-label"
+                : "customer-label"
+        );
+
+
+    labelElement.innerText =
+        label;
+
+
+    const textElement =
+        document.createElement(
+            "div"
+        );
+
+
+    textElement.className =
+        "message-text";
+
+
+    textElement.innerText =
+        text;
+
+
+    row.appendChild(
+        labelElement
+    );
+
+
+    row.appendChild(
+        textElement
+    );
+
+
+    conversation.appendChild(
+        row
+    );
+
+
+    conversation.scrollTop =
+        conversation.scrollHeight;
+}
+
+
+/* ==========================================================
+   TIMER
+========================================================== */
+
+function startTimer() {
+
+    stopTimer();
+
+
+    seconds = 0;
+
+
+    document.getElementById(
+        "timer"
+    ).innerText =
+        "00:00";
+
+
+    timerInterval =
+        setInterval(
+            function() {
+
+                seconds++;
+
+
+                const minutes =
+                    Math.floor(
+                        seconds / 60
+                    );
+
+
+                const remaining =
+                    seconds % 60;
+
+
+                document.getElementById(
+                    "timer"
+                ).innerText =
+
+                    String(minutes)
+                        .padStart(2, "0")
+
+                    +
+
+                    ":"
+
+                    +
+
+                    String(remaining)
+                        .padStart(2, "0");
+
+            },
+            1000
+        );
+}
+
+
+function stopTimer() {
+
+    if (timerInterval) {
+
+        clearInterval(
+            timerInterval
+        );
+
+        timerInterval = null;
+
+    }
+}
+
+
+/* ==========================================================
+   PRICES
+========================================================== */
+
+const prices = {
+
+    "Margherita": {
+        "Small": 199,
+        "Medium": 299,
+        "Large": 399
+    },
+
+    "Farmhouse": {
+        "Small": 249,
+        "Medium": 349,
+        "Large": 449
+    },
+
+    "Pepperoni": {
+        "Small": 299,
+        "Medium": 399,
+        "Large": 499
+    },
+
+    "Cheese Pizza": {
+        "Small": 219,
+        "Medium": 319,
+        "Large": 419
+    },
+
+    "Veg Pizza": {
+        "Small": 199,
+        "Medium": 299,
+        "Large": 399
+    },
+
+    "Paneer Pizza": {
+        "Small": 249,
+        "Medium": 349,
+        "Large": 449
+    },
+
+    "Corn Pizza": {
+        "Small": 229,
+        "Medium": 329,
+        "Large": 429
+    }
+
+};
+
+
+/* ==========================================================
+   BILL
+========================================================== */
+
+function calculateBill() {
+
+    const item =
+        document.getElementById(
+            "item_name"
+        ).value;
+
+
+    const size =
+        document.getElementById(
+            "size"
+        ).value;
+
+
+    const quantity =
+        parseInt(
+            document.getElementById(
+                "quantity"
+            ).value
+        ) || 1;
+
+
+    let price = 0;
+
+
+    if (
+        item &&
+        size &&
+        prices[item] &&
+        prices[item][size]
+    ) {
+
+        price =
+            prices[item][size];
+
+    }
+
+
+    const subtotal =
+        price * quantity;
+
+
+    const gst =
+        subtotal * 0.05;
+
+
+    const total =
+        subtotal + gst;
+
+
+    document.getElementById(
+        "price"
+    ).innerText =
+        "₹" +
+        price.toFixed(2);
+
+
+    document.getElementById(
+        "billQuantity"
+    ).innerText =
+        quantity;
+
+
+    document.getElementById(
+        "subtotal"
+    ).innerText =
+        "₹" +
+        subtotal.toFixed(2);
+
+
+    document.getElementById(
+        "gst"
+    ).innerText =
+        "₹" +
+        gst.toFixed(2);
+
+
+    document.getElementById(
+        "total"
+    ).innerText =
+        "₹" +
+        total.toFixed(2);
+}
+
+
+/* ==========================================================
+   FORM VALIDATION
+========================================================== */
+
+document.getElementById(
+    "orderForm"
+).addEventListener(
+    "submit",
+    function(event) {
+
+        const mobile =
+            document.getElementById(
+                "mobile"
+            ).value.trim();
+
+
+        if (
+            !/^[0-9]{10}$/.test(mobile)
+        ) {
+
+            event.preventDefault();
+
+
+            showMessage(
+                "Please enter a valid 10 digit mobile number.",
+                "error"
+            );
+
+
+            return;
+        }
+
+
+        const item =
+            document.getElementById(
+                "item_name"
+            ).value;
+
+
+        const size =
+            document.getElementById(
+                "size"
+            ).value;
+
+
+        const orderType =
+            document.getElementById(
+                "order_type"
+            ).value;
+
+
+        if (
+            !item ||
+            !size ||
+            !orderType
+        ) {
+
+            event.preventDefault();
+
+
+            showMessage(
+                "Please complete pizza, size and order type.",
+                "error"
+            );
+
+        }
+
+    }
+);
+
+
+/* ==========================================================
+   INITIAL BILL
+========================================================== */
+
+calculateBill();
+
+</script>
+
+</body>
+</html>

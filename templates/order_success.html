@@ -1,0 +1,652 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Order Successful - Pizza House</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #FAFAFA;
+            color: #222222;
+        }
+
+        /* ---------------- HEADER ---------------- */
+
+        header {
+            background: #C62828;
+            color: white;
+            padding: 18px 35px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h2 {
+            font-size: 24px;
+        }
+
+        nav {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* ---------------- MAIN ---------------- */
+
+        .container {
+            width: 90%;
+            max-width: 950px;
+            margin: 35px auto;
+        }
+
+        .success-box {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.10);
+        }
+
+        .success-message {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .success-icon {
+            font-size: 55px;
+            margin-bottom: 10px;
+        }
+
+        .success-message h1 {
+            color: #2E7D32;
+            margin-bottom: 8px;
+            font-size: 30px;
+        }
+
+        .success-message p {
+            color: #777777;
+            font-size: 16px;
+        }
+
+        /* ---------------- INVOICE ---------------- */
+
+        .invoice {
+            border: 1px solid #dddddd;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .invoice-header {
+            background: #C62828;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .invoice-header h2 {
+            font-size: 25px;
+        }
+
+        .invoice-header p {
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .invoice-info {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #eeeeee;
+            gap: 20px;
+        }
+
+        .info-box {
+            width: 48%;
+        }
+
+        .info-box h3 {
+            color: #C62828;
+            margin-bottom: 10px;
+            font-size: 17px;
+        }
+
+        .info-box p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+
+        /* ---------------- ORDER TABLE ---------------- */
+
+        .order-section {
+            padding: 20px;
+        }
+
+        .order-section h3 {
+            color: #C62828;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th {
+            background: #FDECEC;
+            color: #222222;
+            padding: 12px;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        table td {
+            padding: 12px;
+            border-bottom: 1px solid #eeeeee;
+            font-size: 14px;
+        }
+
+        /* ---------------- BILL SUMMARY ---------------- */
+
+        .bill-summary {
+            width: 100%;
+            max-width: 400px;
+            margin-left: auto;
+            padding: 20px;
+        }
+
+        .bill-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 15px;
+        }
+
+        .bill-row.total {
+            border-top: 2px solid #C62828;
+            margin-top: 8px;
+            padding-top: 12px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #C62828;
+        }
+
+        /* ---------------- BUTTONS ---------------- */
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .btn-red {
+            background: #C62828;
+            color: white;
+        }
+
+        .btn-red:hover {
+            background: #A61C1C;
+        }
+
+        .btn-gray {
+            background: #777777;
+            color: white;
+        }
+
+        .btn-gray:hover {
+            background: #555555;
+        }
+
+        .btn-green {
+            background: #2E7D32;
+            color: white;
+        }
+
+        .btn-green:hover {
+            background: #1B5E20;
+        }
+
+        /* ---------------- FOOTER ---------------- */
+
+        footer {
+            text-align: center;
+            color: #777777;
+            font-size: 13px;
+            padding: 25px;
+        }
+
+        /* ---------------- PRINT ---------------- */
+
+        @media print {
+
+            header,
+            .buttons,
+            footer {
+                display: none !important;
+            }
+
+            body {
+                background: white;
+            }
+
+            .container {
+                width: 100%;
+                margin: 0;
+            }
+
+            .success-box {
+                box-shadow: none;
+                padding: 0;
+            }
+
+            .success-message {
+                margin-bottom: 20px;
+            }
+
+            .invoice {
+                border: 1px solid #000;
+            }
+        }
+
+        /* ---------------- MOBILE ---------------- */
+
+        @media (max-width: 700px) {
+
+            header {
+                padding: 15px;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            nav {
+                gap: 10px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .container {
+                width: 95%;
+                margin: 20px auto;
+            }
+
+            .success-box {
+                padding: 15px;
+            }
+
+            .invoice-info {
+                flex-direction: column;
+            }
+
+            .info-box {
+                width: 100%;
+            }
+
+            .invoice-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 8px;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            table th,
+            table td {
+                padding: 8px 5px;
+            }
+
+            .bill-summary {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+
+<header>
+
+    <h2>🍕 Pizza House</h2>
+
+    <nav>
+        <a href="{{ url_for('customer_dashboard') }}">Home</a>
+
+        <a href="{{ url_for('order') }}">New Order</a>
+
+        <a href="{{ url_for('booking') }}">Table Booking</a>
+
+        <a href="{{ url_for('menu') }}">Menu</a>
+
+        {% if session.get('role') == 'admin' %}
+            <a href="{{ url_for('admin') }}">Admin</a>
+        {% endif %}
+    </nav>
+
+</header>
+
+
+<!-- ================= MAIN ================= -->
+
+<div class="container">
+
+    <div class="success-box">
+
+        <!-- SUCCESS MESSAGE -->
+
+        <div class="success-message">
+
+            <div class="success-icon">
+                ✅
+            </div>
+
+            <h1>Order Confirmed!</h1>
+
+            <p>
+                Thank you for ordering from Pizza House.
+                Your order has been successfully saved.
+            </p>
+
+        </div>
+
+
+        <!-- ================= INVOICE ================= -->
+
+        <div class="invoice">
+
+            <!-- Invoice Header -->
+
+            <div class="invoice-header">
+
+                <div>
+                    <h2>🍕 PIZZA HOUSE</h2>
+
+                    <p>
+                        Delicious Pizza, Happy Moments!
+                    </p>
+                </div>
+
+                <div>
+                    <strong>TAX INVOICE</strong>
+
+                    <p>
+                        Invoice No: #{{ order_id }}
+                    </p>
+
+                    <p>
+                        Order No: #{{ order_id }}
+                    </p>
+                </div>
+
+            </div>
+
+
+            <!-- Customer + Order Information -->
+
+            <div class="invoice-info">
+
+                <div class="info-box">
+
+                    <h3>Customer Details</h3>
+
+                    <p>
+                        <strong>Name:</strong>
+                        {{ customer_name }}
+                    </p>
+
+                    <p>
+                        <strong>Mobile:</strong>
+                        {{ mobile }}
+                    </p>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <h3>Order Details</h3>
+
+                    <p>
+                        <strong>Order Type:</strong>
+                        {{ order_type }}
+                    </p>
+
+                    <p>
+                        <strong>Date:</strong>
+
+                        {% if order_date %}
+                            {{ order_date }}
+                        {% else %}
+                            Current Order
+                        {% endif %}
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- Order Table -->
+
+            <div class="order-section">
+
+                <h3>Order Items</h3>
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Item</th>
+                            <th>Size</th>
+                            <th>Qty</th>
+                            <th>Toppings</th>
+                            <th>Price</th>
+                            <th>Total</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+
+                            <td>
+                                {{ item_name }}
+                            </td>
+
+                            <td>
+                                {{ size }}
+                            </td>
+
+                            <td>
+                                {{ quantity }}
+                            </td>
+
+                            <td>
+                                {{ toppings }}
+                            </td>
+
+                            <td>
+                                ₹{{ "%.2f"|format(price|float) }}
+                            </td>
+
+                            <td>
+                                ₹{{ "%.2f"|format(subtotal|float) }}
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <!-- Bill Summary -->
+
+            <div class="bill-summary">
+
+                <div class="bill-row">
+
+                    <span>
+                        Subtotal
+                    </span>
+
+                    <span>
+                        ₹{{ "%.2f"|format(subtotal|float) }}
+                    </span>
+
+                </div>
+
+
+                <div class="bill-row">
+
+                    <span>
+                        GST
+                    </span>
+
+                    <span>
+                        ₹{{ "%.2f"|format(gst|float) }}
+                    </span>
+
+                </div>
+
+
+                <div class="bill-row total">
+
+                    <span>
+                        Grand Total
+                    </span>
+
+                    <span>
+                        ₹{{ "%.2f"|format(total|float) }}
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= BUTTONS ================= -->
+
+        <div class="buttons">
+
+            <!-- Print -->
+
+            <button
+                onclick="window.print()"
+                class="btn btn-green">
+                🖨️ Print / Save PDF
+            </button>
+
+
+            <!-- New Order -->
+
+            <a
+                href="{{ url_for('menu') }}"
+                class="btn btn-red">
+                ➕ New Order
+            </a>
+
+
+            <!-- ROLE BASED DASHBOARD -->
+
+            {% if session.get('role') == 'customer' %}
+
+                <a
+                    href="{{ url_for('customer_dashboard') }}"
+                    class="btn btn-gray">
+                    👤 Customer Dashboard
+                </a>
+
+            {% else %}
+
+                <a
+                    href="{{ url_for('admin') }}"
+                    class="btn btn-gray">
+                    📊 Admin Dashboard
+                </a>
+
+            {% endif %}
+
+
+            <!-- Home -->
+
+            {% if session.get('role') == 'customer' %}
+
+                <a
+                    href="{{ url_for('customer_dashboard') }}"
+                    class="btn btn-gray">
+                    🏠 Home
+                </a>
+
+            {% else %}
+
+                <a
+                    href="{{ url_for('admin') }}"
+                    class="btn btn-gray">
+                    🏠 Home
+                </a>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    © 2026 Pizza House. All Rights Reserved.
+
+</footer>
+
+
+</body>
+</html>

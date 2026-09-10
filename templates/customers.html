@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Customers - Pizza House</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f7f7f7;
+            color: #222;
+        }
+
+        header {
+            background: #c62828;
+            color: white;
+            padding: 18px 45px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 18px;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            color: #c62828;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #777;
+            margin-bottom: 25px;
+        }
+
+        .top-buttons {
+            margin-bottom: 25px;
+        }
+
+        .top-buttons a {
+            display: inline-block;
+            padding: 11px 18px;
+            margin-right: 8px;
+            border-radius: 7px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .admin-btn {
+            background: #eeeeee;
+            color: #333;
+        }
+
+        .order-btn {
+            background: #c62828;
+            color: white;
+        }
+
+        .menu-btn {
+            background: #2e7d32;
+            color: white;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        }
+
+        .card h2 {
+            color: #c62828;
+            margin-bottom: 20px;
+        }
+
+        .customer-count {
+            background: #fdecec;
+            color: #c62828;
+            display: inline-block;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 900px;
+        }
+
+        th {
+            background: #c62828;
+            color: white;
+            padding: 13px;
+            text-align: left;
+        }
+
+        td {
+            padding: 13px;
+            border-bottom: 1px solid #eeeeee;
+        }
+
+        tr:hover {
+            background: #fff8f8;
+        }
+
+        .customer-name a {
+            color: #c62828;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .customer-name a:hover {
+            text-decoration: underline;
+        }
+
+        .mobile {
+            color: #555;
+            letter-spacing: 0.5px;
+        }
+
+        .orders-badge {
+            display: inline-block;
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .spending {
+            color: #2e7d32;
+            font-weight: bold;
+        }
+
+        .view-btn {
+            display: inline-block;
+            background: #eeeeee;
+            color: #333;
+            padding: 8px 14px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .view-btn:hover {
+            background: #c62828;
+            color: white;
+        }
+
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .delete-btn:hover {
+            background: #b02a37;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 40px;
+            color: #777;
+        }
+
+        .empty-icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
+
+        .empty h3 {
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        footer {
+            text-align: center;
+            color: #777;
+            padding: 30px;
+        }
+
+        @media (max-width: 800px) {
+
+            header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            nav a {
+                margin: 0 6px;
+            }
+
+            .container {
+                padding: 0 12px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <div class="logo">
+        🍕 Pizza House
+    </div>
+
+    <nav>
+
+        <a href="/">
+            Home
+        </a>
+
+        <a href="/order">
+            Orders
+        </a>
+
+        <a href="/booking">
+            Booking
+        </a>
+
+        <a href="/menu">
+            Menu
+        </a>
+
+        <a href="/admin">
+            Admin
+        </a>
+
+    </nav>
+
+</header>
+
+
+<div class="container">
+
+
+    <h1>
+        👥 Customer Management
+    </h1>
+
+
+    <p class="subtitle">
+        View Pizza House customers and their complete order history.
+    </p>
+
+
+    <div class="top-buttons">
+
+        <a
+            href="/admin"
+            class="admin-btn"
+        >
+            📊 Admin Dashboard
+        </a>
+
+
+        <a
+            href="/order"
+            class="order-btn"
+        >
+            ➕ New Order
+        </a>
+
+
+        <a
+            href="/menu"
+            class="menu-btn"
+        >
+            🍕 View Menu
+        </a>
+
+    </div>
+
+
+    <div class="card">
+
+
+        <h2>
+            📋 Customer List
+        </h2>
+
+
+        <div class="customer-count">
+
+            👥 Total Customers:
+            {{ customers|length }}
+
+        </div>
+
+
+        {% if customers %}
+
+
+        <div class="table-wrapper">
+
+
+            <table>
+
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            #
+                        </th>
+
+                        <th>
+                            Customer Name
+                        </th>
+
+                        <th>
+                            Mobile Number
+                        </th>
+
+                        <th>
+                            Total Orders
+                        </th>
+
+                        <th>
+                            Total Spending
+                        </th>
+
+                        <th>
+                            Details
+                        </th>
+
+                        <th>
+                            Action
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+
+                    {% for customer in customers %}
+
+
+                    <tr>
+
+
+                        <td>
+                            {{ loop.index }}
+                        </td>
+
+
+                        <td class="customer-name">
+
+                            <a
+                                href="{{ url_for('customer_details', mobile=customer.mobile) }}"
+                            >
+
+                                👤
+                                {{ customer.customer_name }}
+
+                            </a>
+
+                        </td>
+
+
+                        <td class="mobile">
+
+                            📱
+                            {{ customer.mobile }}
+
+                        </td>
+
+
+                        <td>
+
+                            <span class="orders-badge">
+
+                                📦
+                                {{ customer.total_orders }}
+
+                                Order{% if customer.total_orders != 1 %}s{% endif %}
+
+                            </span>
+
+                        </td>
+
+
+                        <td class="spending">
+
+                            ₹{{ "%.2f"|format(customer.total_spending) }}
+
+                        </td>
+
+
+                        <td>
+
+                            <a
+                                href="{{ url_for('customer_details', mobile=customer.mobile) }}"
+                                class="view-btn"
+                            >
+
+                                👁 View Details
+
+                            </a>
+
+                        </td>
+
+
+                        <td>
+
+
+                            <form
+                                method="POST"
+                                action="/customer/delete/{{ customer.mobile }}"
+                                onsubmit="return confirm('⚠️ Are you sure you want to delete {{ customer.customer_name }}? All orders of this customer will also be deleted.');"
+                            >
+
+                                <button
+                                    type="submit"
+                                    class="delete-btn"
+                                >
+
+                                    🗑️ Delete
+
+                                </button>
+
+                            </form>
+
+
+                        </td>
+
+
+                    </tr>
+
+
+                    {% endfor %}
+
+
+                </tbody>
+
+
+            </table>
+
+
+        </div>
+
+
+        {% else %}
+
+
+        <div class="empty">
+
+
+            <div class="empty-icon">
+                👥
+            </div>
+
+
+            <h3>
+                No Customers Yet
+            </h3>
+
+
+            <p>
+                Customers will appear here after they place an order.
+            </p>
+
+
+            <br>
+
+
+            <a
+                href="/order"
+                class="order-btn"
+                style="
+                    display:inline-block;
+                    padding:11px 18px;
+                    border-radius:7px;
+                    text-decoration:none;
+                    font-weight:bold;
+                "
+            >
+
+                ➕ Create First Order
+
+            </a>
+
+
+        </div>
+
+
+        {% endif %}
+
+
+    </div>
+
+
+</div>
+
+
+<footer>
+
+    © 2026 Pizza House |
+    AI Restaurant Management System
+
+</footer>
+
+
+</body>
+
+</html>

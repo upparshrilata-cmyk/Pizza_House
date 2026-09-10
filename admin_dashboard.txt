@@ -1,0 +1,76 @@
+import streamlit as st
+from database import get_dashboard_stats, get_orders
+
+
+def show_admin_dashboard():
+
+    st.title("🍕 Pizza House")
+    st.subheader("Admin Dashboard")
+
+    # Get real data
+    stats = get_dashboard_stats()
+    orders = get_orders()
+
+    # -----------------------------
+    # Statistics
+    # -----------------------------
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        st.metric(
+            "💰 Total Sales",
+            f"₹{stats['total_sales']:.2f}"
+        )
+
+    with col2:
+        st.metric(
+            "📦 Total Orders",
+            stats["total_orders"]
+        )
+
+    with col3:
+        st.metric(
+            "👥 Customers",
+            stats["customers"]
+        )
+
+    st.divider()
+
+    # -----------------------------
+    # Recent Orders
+    # -----------------------------
+
+    st.subheader("📋 Recent Orders")
+
+    if orders:
+
+        order_data = []
+
+        for order in orders[:10]:
+
+            order_data.append({
+                "Order ID": order["id"],
+                "Customer": order["customer_name"],
+                "Mobile": order["mobile"],
+                "Item": order["item_name"],
+                "Size": order["size"],
+                "Quantity": order["quantity"],
+                "Total": f"₹{order['total']:.2f}",
+                "Order Type": order["order_type"],
+                "Date": order["order_date"]
+            })
+
+        st.dataframe(
+            order_data,
+            use_container_width=True,
+            hide_index=True
+        )
+
+    else:
+
+        st.info("No orders found.")
+
+    st.divider()
+
+    st.caption("Pizza House AI • Admin Management System")

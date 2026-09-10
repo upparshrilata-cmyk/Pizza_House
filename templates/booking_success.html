@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Booking Confirmed - Pizza House</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #fafafa;
+            color: #222;
+        }
+
+        header {
+            background: #c62828;
+            color: white;
+            padding: 18px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        .success-card {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.10);
+            text-align: center;
+        }
+
+        .success-icon {
+            width: 75px;
+            height: 75px;
+            background: #e8f5e9;
+            color: #2e7d32;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 40px;
+        }
+
+        h1 {
+            color: #2e7d32;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #777;
+            margin-bottom: 30px;
+        }
+
+        .booking-number {
+            background: #fdecec;
+            border: 1px solid #f3c2c2;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #c62828;
+        }
+
+        .details {
+            text-align: left;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            padding: 14px 18px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .row:last-child {
+            border-bottom: none;
+        }
+
+        .label {
+            color: #777;
+            font-weight: bold;
+        }
+
+        .value {
+            font-weight: bold;
+            text-align: right;
+        }
+
+        .status {
+            color: #2e7d32;
+        }
+
+        .buttons {
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 13px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .primary {
+            background: #c62828;
+            color: white;
+        }
+
+        .secondary {
+            background: #eeeeee;
+            color: #333;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        footer {
+            text-align: center;
+            color: #777;
+            padding: 25px;
+            margin-top: 30px;
+        }
+
+        @media (max-width: 600px) {
+
+            header {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            nav a {
+                margin: 0 8px;
+                font-size: 14px;
+            }
+
+            .container {
+                margin: 25px auto;
+                padding: 15px;
+            }
+
+            .success-card {
+                padding: 25px 18px;
+            }
+
+            .row {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .value {
+                text-align: left;
+            }
+        }
+
+        @media print {
+
+            header,
+            .buttons,
+            footer {
+                display: none;
+            }
+
+            body {
+                background: white;
+            }
+
+            .container {
+                margin: 0;
+            }
+
+            .success-card {
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        🍕 Pizza House
+    </div>
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="/order">Order</a>
+        <a href="/booking">Booking</a>
+        <a href="/menu">Menu</a>
+        <a href="/admin">Admin</a>
+    </nav>
+
+</header>
+
+
+<div class="container">
+
+    <div class="success-card">
+
+        <div class="success-icon">
+            ✓
+        </div>
+
+        <h1>Table Booking Confirmed!</h1>
+
+        <p class="subtitle">
+            Your table has been successfully booked at Pizza House.
+        </p>
+
+
+        <div class="booking-number">
+
+            Booking ID:
+            #{{ booking_id }}
+
+        </div>
+
+
+        <div class="details">
+
+            <div class="row">
+                <span class="label">Customer Name</span>
+                <span class="value">
+                    {{ customer_name }}
+                </span>
+            </div>
+
+            <div class="row">
+                <span class="label">Mobile Number</span>
+                <span class="value">
+                    {{ mobile }}
+                </span>
+            </div>
+
+            <div class="row">
+                <span class="label">Booking Date</span>
+                <span class="value">
+                    {{ booking_date }}
+                </span>
+            </div>
+
+            <div class="row">
+                <span class="label">Booking Time</span>
+                <span class="value">
+                    {{ booking_time }}
+                </span>
+            </div>
+
+            <div class="row">
+                <span class="label">Number of Guests</span>
+                <span class="value">
+                    {{ guests }}
+                </span>
+            </div>
+
+            <div class="row">
+                <span class="label">Table Number</span>
+                <span class="value">
+                    {{ table_number if table_number else "Any Available Table" }}
+                </span>
+            </div>
+
+            <div class="row">
+                <span class="label">Status</span>
+                <span class="value status">
+                    Confirmed
+                </span>
+            </div>
+
+        </div>
+
+
+        <div class="buttons">
+
+            <button
+                class="btn primary"
+                onclick="window.print()">
+                🖨 Print Booking
+            </button>
+
+            <a
+                href="/booking"
+                class="btn secondary">
+                📅 New Booking
+            </a>
+
+            <a
+                href="/"
+                class="btn secondary">
+                🏠 Home
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<footer>
+    © 2026 Pizza House | AI Restaurant Management System
+</footer>
+
+</body>
+</html>
